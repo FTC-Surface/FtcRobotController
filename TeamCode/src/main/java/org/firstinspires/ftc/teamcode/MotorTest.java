@@ -11,10 +11,10 @@ public class MotorTest extends LinearOpMode {
     public DcMotor bottomRightMotor = null;
 
     public void runOpMode(){
-        topLeftMotor = hardwareMap.get(DcMotor.class, "Top Left Motor");
-        topRightMotor = hardwareMap.get(DcMotor.class, "Top Right Motor");
-        bottomLeftMotor = hardwareMap.get(DcMotor.class, "Bottom Left Motor");
-        bottomRightMotor = hardwareMap.get(DcMotor.class, "Bottom Right Motor");
+        topLeftMotor = hardwareMap.get(DcMotor.class, "topLeft");
+        topRightMotor = hardwareMap.get(DcMotor.class, "topRight");
+        bottomLeftMotor = hardwareMap.get(DcMotor.class, "bottomLeft");
+        bottomRightMotor = hardwareMap.get(DcMotor.class, "bottomRight");
 
         waitForStart();
 
