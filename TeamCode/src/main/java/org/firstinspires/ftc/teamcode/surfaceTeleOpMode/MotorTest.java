@@ -1,4 +1,7 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.surfaceTeleOpMode;
+
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,6 +14,7 @@ public class MotorTest extends LinearOpMode {
     public DcMotor bottomRightMotor = null;
 
     public void runOpMode(){
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         topLeftMotor = hardwareMap.get(DcMotor.class, "topLeft");
         topRightMotor = hardwareMap.get(DcMotor.class, "topRight");
         bottomLeftMotor = hardwareMap.get(DcMotor.class, "bottomLeft");
@@ -19,7 +23,13 @@ public class MotorTest extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive() && !isStopRequested()) {
-            /* drive is for fordward/backward
+
+            telemetry.addData("Front Left: ", topLeftMotor.getCurrentPosition());
+            telemetry.addData("Front Right: ", topRightMotor.getCurrentPosition());
+            telemetry.addData("Back Left: ", bottomLeftMotor.getCurrentPosition());
+            telemetry.addData("Back Right: ", bottomRightMotor.getCurrentPosition());
+            telemetry.update();
+            /* drive is for forward/backward
            strafe is for left/right
            twist is to turn
          */
