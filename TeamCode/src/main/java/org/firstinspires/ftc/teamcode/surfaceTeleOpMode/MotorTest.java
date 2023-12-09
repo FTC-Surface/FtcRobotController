@@ -4,30 +4,27 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @TeleOp(name = "Mecanum Drive Test Copy")
 public class MotorTest extends LinearOpMode {
-    public DcMotor topLeftMotor = null;
-    public DcMotor topRightMotor = null;
-    public DcMotor bottomLeftMotor = null;
-    public DcMotor bottomRightMotor = null;
+    public DcMotorEx topLeftMotor, topRightMotor, bottomLeftMotor, bottomRightMotor;
 
     public void runOpMode(){
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        topLeftMotor = hardwareMap.get(DcMotor.class, "topLeft");
-        topRightMotor = hardwareMap.get(DcMotor.class, "topRight");
-        bottomLeftMotor = hardwareMap.get(DcMotor.class, "bottomLeft");
-        bottomRightMotor = hardwareMap.get(DcMotor.class, "bottomRight");
+        topLeftMotor = hardwareMap.get(DcMotorEx.class, "topLeft");
+        topRightMotor = hardwareMap.get(DcMotorEx.class, "topRight");
+        bottomLeftMotor = hardwareMap.get(DcMotorEx.class, "bottomLeft");
+        bottomRightMotor = hardwareMap.get(DcMotorEx.class, "bottomRight");
 
         waitForStart();
 
         while (opModeIsActive() && !isStopRequested()) {
 
-            telemetry.addData("Front Left: ", topLeftMotor.getCurrentPosition());
-            telemetry.addData("Front Right: ", topRightMotor.getCurrentPosition());
-            telemetry.addData("Back Left: ", bottomLeftMotor.getCurrentPosition());
-            telemetry.addData("Back Right: ", bottomRightMotor.getCurrentPosition());
+            telemetry.addData("Front Left: ", topLeftMotor.getPower());
+            telemetry.addData("Front Right: ", topRightMotor.getPower());
+            telemetry.addData("Back Left: ", bottomLeftMotor.getPower());
+            telemetry.addData("Back Right: ", bottomRightMotor.getPower());
             telemetry.update();
             /* drive is for forward/backward
            strafe is for left/right

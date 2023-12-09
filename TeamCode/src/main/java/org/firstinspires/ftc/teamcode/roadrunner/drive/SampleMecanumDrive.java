@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.RoadRunner.drive;
+/*package org.firstinspires.ftc.teamcode.RoadRunner.drive;
 
 import androidx.annotation.NonNull;
 
@@ -37,23 +37,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.encoderTicksToInches;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.MAX_ANG_ACCEL;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.kA;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.kStatic;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.kV;*/
 
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
  */
-@Config
-public class SampleMecanumDrive extends MecanumDrive {
+//@Config
+/*public class SampleMecanumDrive extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
 
@@ -70,7 +70,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private TrajectoryFollower follower;
 
-    private DcMotorEx leftFront, leftRear, rightRear, rightFront;
+    public DcMotorEx topLeftMotor, topRightMotor, bottomLeftMotor, bottomRightMotor;
     private List<DcMotorEx> motors;
 
     private IMU imu;
@@ -99,12 +99,12 @@ public class SampleMecanumDrive extends MecanumDrive {
                 DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
         imu.initialize(parameters);
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        topLeftMotor = hardwareMap.get(DcMotorEx.class, "topLeft");
+        bottomLeftMotor = hardwareMap.get(DcMotorEx.class, "bottomLeft");
+        bottomRightMotor = hardwareMap.get(DcMotorEx.class, "bottomRight");
+        topRightMotor = hardwareMap.get(DcMotorEx.class, "topRight");
 
-        motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
+        motors = Arrays.asList(topLeftMotor, bottomLeftMotor, bottomRightMotor, topRightMotor);
 
         for (DcMotorEx motor : motors) {
             MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();
@@ -308,4 +308,4 @@ public class SampleMecanumDrive extends MecanumDrive {
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
     }
-}
+}*/
