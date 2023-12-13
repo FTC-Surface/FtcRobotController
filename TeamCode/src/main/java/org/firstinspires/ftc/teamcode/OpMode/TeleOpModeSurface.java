@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.surfaceTeleOpMode;
+package org.firstinspires.ftc.teamcode.OpMode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -6,16 +6,24 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.teamcode.Subsystems.BootWheel;
+import org.firstinspires.ftc.teamcode.Subsystems.Constants;
+
 @TeleOp(name = "Mecanum Drive Test Copy")
-public class MotorTest extends LinearOpMode {
+public class TeleOpModeSurface extends LinearOpMode {
     public DcMotorEx topLeftMotor, topRightMotor, bottomLeftMotor, bottomRightMotor;
+
+    BootWheel bootWheel = new BootWheel();
 
     public void runOpMode(){
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
         topLeftMotor = hardwareMap.get(DcMotorEx.class, "topLeft");
         topRightMotor = hardwareMap.get(DcMotorEx.class, "topRight");
         bottomLeftMotor = hardwareMap.get(DcMotorEx.class, "bottomLeft");
         bottomRightMotor = hardwareMap.get(DcMotorEx.class, "bottomRight");
+
+        bootWheel.init(hardwareMap);
 
         waitForStart();
 
@@ -60,6 +68,13 @@ public class MotorTest extends LinearOpMode {
             topRightMotor.setPower(speed[1]);
             bottomLeftMotor.setPower(speed[2]);
             bottomRightMotor.setPower(speed[3]);
+
+            if(gamepad1.left_bumper){
+                bootWheel.spinWheel(Constants.wheelState.Spin);
+            }
+            if(gamepad1.right_bumper){
+                bootWheel.spinWheel(Constants.wheelState.Stop);
+            }
         }
     }
 }
