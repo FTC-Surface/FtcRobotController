@@ -61,6 +61,7 @@ public class TeleOpModeSurface extends LinearOpMode {
             if(max > 1){
                 for (int i = 0 ; i < speed.length ; i++){
                     speed[i] /= max;
+                    speed[i] /= 0.9;
                 }
             }
 
