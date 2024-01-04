@@ -58,17 +58,17 @@ public class TeleOpModeSurface extends LinearOpMode {
                 }
             }
 
-            if(max > 1){
-                for (int i = 0 ; i < speed.length ; i++){
+            if(max > 1) {
+                for (int i = 0; i < speed.length; i++) {
                     speed[i] /= max;
                     speed[i] /= 0.9;
                 }
             }
 
-            topLeftMotor.setPower(speed[0]);
-            topRightMotor.setPower(speed[1]);
-            bottomLeftMotor.setPower(speed[2]);
-            bottomRightMotor.setPower(speed[3]);
+            topLeftMotor.setPower(-speed[0]);
+            topRightMotor.setPower(-speed[1]);
+            bottomLeftMotor.setPower(-speed[2]);
+            bottomRightMotor.setPower(-speed[3]);
 
             if(gamepad1.left_bumper){
                 bootWheel.spinWheel(Constants.wheelState.Spin);
