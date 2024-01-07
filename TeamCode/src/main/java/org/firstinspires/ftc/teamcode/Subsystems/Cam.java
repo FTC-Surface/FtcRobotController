@@ -32,11 +32,13 @@ public class Cam extends LinearOpMode {
                     getInstance().
                         createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
 
+        kamera.setPipeline(new camPipeline());
+
         kamera.openCameraDeviceAsync(
                 new OpenCvCamera.AsyncCameraOpenListener() {
                     @Override
                     public void onOpened() {
-                        kamera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
+                        kamera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
                     }
 
                     @Override
@@ -45,6 +47,7 @@ public class Cam extends LinearOpMode {
                         telemetry.update();
                     }
                 });
+        FtcDashboard.getInstance().startCameraStream(kamera, 0);
     }
 
     @Override
