@@ -6,14 +6,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.Subsystems.BootWheel;
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 
 @TeleOp(name = "Mecanum Drive Test Copy")
 public class TeleOpModeSurface extends LinearOpMode {
     public DcMotorEx topLeftMotor, topRightMotor, bottomLeftMotor, bottomRightMotor;
-
-    BootWheel bootWheel = new BootWheel();
 
     public void runOpMode(){
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -22,8 +19,6 @@ public class TeleOpModeSurface extends LinearOpMode {
         topRightMotor = hardwareMap.get(DcMotorEx.class, "topRight");
         bottomLeftMotor = hardwareMap.get(DcMotorEx.class, "bottomLeft");
         bottomRightMotor = hardwareMap.get(DcMotorEx.class, "bottomRight");
-
-        bootWheel.init(hardwareMap);
 
         waitForStart();
 
@@ -44,10 +39,10 @@ public class TeleOpModeSurface extends LinearOpMode {
 
             //This gives us the speed for the various motors.
             double[] speed = {
-                    (drive + strafe + twist),
+                    (drive + strafe - twist),
                     (drive - strafe - twist),
                     (drive - strafe + twist),
-                    (drive + strafe - twist)};
+                    (drive + strafe + twist)};
 
             //Calculate the maximum/largest speed of all the motors
             double max = Math.abs(speed[0]);
@@ -61,7 +56,6 @@ public class TeleOpModeSurface extends LinearOpMode {
             if(max > 1) {
                 for (int i = 0; i < speed.length; i++) {
                     speed[i] /= max;
-                    speed[i] /= 0.9;
                 }
             }
 
@@ -69,13 +63,6 @@ public class TeleOpModeSurface extends LinearOpMode {
             topRightMotor.setPower(-speed[1]);
             bottomLeftMotor.setPower(-speed[2]);
             bottomRightMotor.setPower(-speed[3]);
-
-            if(gamepad1.left_bumper){
-                bootWheel.spinWheel(Constants.wheelState.Spin);
-            }
-            if(gamepad1.right_bumper){
-                bootWheel.spinWheel(Constants.wheelState.Stop);
-            }
         }
     }
 }

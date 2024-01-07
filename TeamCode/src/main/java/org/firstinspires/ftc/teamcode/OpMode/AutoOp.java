@@ -10,6 +10,5 @@ public class AutoOp extends LinearOpMode {
     public void runOpMode(){
         cam.init(hardwareMap);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-a
     }
 }
