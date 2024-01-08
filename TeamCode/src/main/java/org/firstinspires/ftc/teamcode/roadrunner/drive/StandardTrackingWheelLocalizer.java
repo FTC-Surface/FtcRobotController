@@ -93,7 +93,7 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         lastEncVels.clear();
         lastEncVels.add(leftVel);
         lastEncVels.add(rightVel);
-        lastEncVels.add(frontVel);
+        lastEncVels.add(froantVel);
 
         return Arrays.asList(
                 encoderTicksToInches(leftVel) * X_MULTIPLIER,
