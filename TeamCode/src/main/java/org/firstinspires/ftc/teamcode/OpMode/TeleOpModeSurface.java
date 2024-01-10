@@ -40,10 +40,10 @@ public class TeleOpModeSurface extends LinearOpMode {
 
             //This gives us the speed for the various motors.
             double[] speed = {
-                    (drive + strafe - twist),
+                    (drive + strafe + twist),
                     (drive - strafe - twist),
                     (drive - strafe + twist),
-                    (drive + strafe + twist)};
+                    (drive + strafe - twist)};
 
             //Calculate the maximum/largest speed of all the motors
             double max = Math.abs(speed[0]);

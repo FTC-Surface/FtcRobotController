@@ -16,6 +16,8 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 public class Cam extends LinearOpMode {
     public OpenCvWebcam kamera = null;
+    public final int camLength = 240;
+    public final int camWidth = 360;
 
     public void init(HardwareMap hardwareMap){
 
@@ -38,7 +40,7 @@ public class Cam extends LinearOpMode {
                 new OpenCvCamera.AsyncCameraOpenListener() {
                     @Override
                     public void onOpened() {
-                        kamera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                        kamera.startStreaming(camWidth, camLength, OpenCvCameraRotation.UPRIGHT);
                     }
 
                     @Override
