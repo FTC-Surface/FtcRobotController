@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 
@@ -21,6 +22,10 @@ public class TeleOpModeSurface extends LinearOpMode {
         bottomLeftMotor = hardwareMap.get(DcMotorEx.class, "bottomLeft");
         bottomRightMotor = hardwareMap.get(DcMotorEx.class, "bottomRight");
 
+        Elevator elevator = new Elevator();
+
+        elevator.init(hardwareMap);
+
         waitForStart();
 
         while (opModeIsActive() && !isStopRequested()) {
@@ -29,6 +34,8 @@ public class TeleOpModeSurface extends LinearOpMode {
             telemetry.addData("Front Right: ", topRightMotor.getPower());
             telemetry.addData("Back Left: ", bottomLeftMotor.getPower());
             telemetry.addData("Back Right: ", bottomRightMotor.getPower());
+            telemetry.addData("Back Left: ", elevator.LeftMot.getPower());
+            telemetry.addData("Back Left: ", elevator.RightMot.getPower());
             telemetry.update();
             /* drive is for forward/backward
            strafe is for left/right
@@ -40,17 +47,17 @@ public class TeleOpModeSurface extends LinearOpMode {
 
             //This gives us the speed for the various motors.
             double[] speed = {
-                    (drive + strafe + twist),
-                    (drive - strafe - twist),
+                    (drive + strafe - twist),
                     (drive - strafe + twist),
-                    (drive + strafe - twist)};
+                    (drive - strafe - twist),
+                    (drive + strafe + twist)};
 
             //Calculate the maximum/largest speed of all the motors
             double max = Math.abs(speed[0]);
 
-            for (double s : speed) {
-                if(s > max) {
-                    max = Math.abs(s);
+            for (int i = 0; i < speed.length; i++) {
+                if(max < Math.abs(speed[i])) {
+                    max = Math.abs(speed[i]);
                 }
             }
 
@@ -64,6 +71,10 @@ public class TeleOpModeSurface extends LinearOpMode {
             topRightMotor.setPower(-speed[1]);
             bottomLeftMotor.setPower(-speed[2]);
             bottomRightMotor.setPower(-speed[3]);
+
+            if(gamepad1.right_trigger > 0.1f){
+                elevator.moveLift();
+            }
         }
     }
 }
