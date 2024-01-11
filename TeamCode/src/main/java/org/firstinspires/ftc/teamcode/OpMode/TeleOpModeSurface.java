@@ -72,8 +72,11 @@ public class TeleOpModeSurface extends LinearOpMode {
             bottomLeftMotor.setPower(-speed[2]);
             bottomRightMotor.setPower(-speed[3]);
 
-            if(gamepad1.right_trigger > 0.1f){
-                elevator.moveLift();
+            if(gamepad1.dpad_up){
+                elevator.moveLift(Constants.elevStates.up);
+            }
+            if(gamepad1.dpad_down){
+                elevator.moveLift(Constants.elevStates.down);
             }
         }
     }

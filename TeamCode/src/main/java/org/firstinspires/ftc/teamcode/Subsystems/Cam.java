@@ -6,18 +6,18 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+import org.firstinspires.ftc.teamcode.Subsystems.camPipeline;
 public class Cam extends LinearOpMode {
     public OpenCvWebcam kamera = null;
     public final int camLength = 240;
     public final int camWidth = 360;
+    public camPipeline pipeline;
 
     public void init(HardwareMap hardwareMap){
 
@@ -50,6 +50,10 @@ public class Cam extends LinearOpMode {
                     }
                 });
         FtcDashboard.getInstance().startCameraStream(kamera, 0);
+    }
+
+    public int getZone(){
+        return pipeline.zone();
     }
 
     @Override

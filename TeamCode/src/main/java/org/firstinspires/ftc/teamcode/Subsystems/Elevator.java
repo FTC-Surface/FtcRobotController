@@ -18,14 +18,28 @@ public class Elevator {
         RightMot.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void moveLift(){
-        LeftMot.setTargetPosition(500);
-        RightMot.setTargetPosition(-500);
+    public void moveLift(Constants.elevStates state){
+        switch (state){
+            case up:
+                LeftMot.setTargetPosition(-3000);
+                RightMot.setTargetPosition(3000);
 
-        LeftMot.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        RightMot.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                LeftMot.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                RightMot.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
-        LeftMot.setPower(-1);
-        RightMot.setPower(1);
+                LeftMot.setPower(1);
+                RightMot.setPower(-1);
+                break;
+            case down:
+                LeftMot.setTargetPosition(-50);
+                RightMot.setTargetPosition(50);
+
+                LeftMot.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                RightMot.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+
+                LeftMot.setPower(-1);
+                RightMot.setPower(1);
+        }
+
     }
 }
