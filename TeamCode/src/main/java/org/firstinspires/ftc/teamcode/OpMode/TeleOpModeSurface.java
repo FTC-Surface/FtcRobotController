@@ -8,13 +8,17 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.teamcode.Subsystems.AirPlaneLauncher;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 
 @TeleOp(name = "Mecanum Drive")
 public class TeleOpModeSurface extends LinearOpMode {
-    public DcMotorEx topLeftMotor, topRightMotor, bottomLeftMotor, bottomRightMotor;
+    DcMotorEx topLeftMotor, topRightMotor, bottomLeftMotor, bottomRightMotor;
+    Elevator elevator = new Elevator();
+    AirPlaneLauncher launcher = new AirPlaneLauncher();
 
     public void runOpMode(){
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -34,14 +38,12 @@ public class TeleOpModeSurface extends LinearOpMode {
         bottomLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bottomRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        Elevator elevator = new Elevator();
-
         elevator.init(hardwareMap);
-
         int height = 0;
 
-        waitForStart();
+        launcher.init(hardwareMap);
 
+        waitForStart();
         while (opModeIsActive() && !isStopRequested()) {
 
             telemetry.addData("Front Left: ", topLeftMotor.getPower());
@@ -99,6 +101,16 @@ public class TeleOpModeSurface extends LinearOpMode {
             if(gamepad1.left_trigger > 0.3 && height > 0){
                 elevator.moveLift(Constants.elevStates.down, height - 100);
                 height -= 13;
+            }
+
+
+            if(gamepad1.a){
+                launcher.launchPlane();
+                sleep((350));
+            }
+            if(gamepad1.b){
+                launcher.reset();
+                sleep((350));
             }
         }
     }

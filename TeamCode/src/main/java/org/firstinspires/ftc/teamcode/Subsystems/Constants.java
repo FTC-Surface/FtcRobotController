@@ -4,6 +4,7 @@ public class Constants {
     public enum autoStates{
         idle,
         ready,
+        forward,
         park
     }
 
