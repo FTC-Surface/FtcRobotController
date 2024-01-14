@@ -14,7 +14,7 @@ public class RedHighAuto extends LinearOpMode {
     SampleMecanumDrive drive;
     Constants.autoStates currentTraj = Constants.autoStates.idle;
 
-    Pose2d startPose = new Pose2d(39.5, 59.6, Math.toRadians(270));
+    Pose2d startPose = new Pose2d(36, 59.6, Math.toRadians(270));
 
     void nextTraj(Constants.autoStates state){
 

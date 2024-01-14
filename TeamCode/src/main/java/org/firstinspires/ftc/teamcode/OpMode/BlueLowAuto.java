@@ -14,7 +14,7 @@ public class BlueLowAuto extends LinearOpMode {
     SampleMecanumDrive drive;
     Constants.autoStates currentTraj = Constants.autoStates.idle;
 
-    Pose2d startPose = new Pose2d(-17.5, -59.6, Math.toRadians(90));
+    Pose2d startPose = new Pose2d(-12, -59.6, Math.toRadians(90));
 
     void nextTraj(Constants.autoStates state){
 

@@ -14,7 +14,7 @@ public class BlueHighAuto extends LinearOpMode {
     SampleMecanumDrive drive;
     Constants.autoStates currentTraj = Constants.autoStates.idle;
 
-    Pose2d startPose = new Pose2d(39.5, -59.6, Math.toRadians(90));
+    Pose2d startPose = new Pose2d(36, -59.6, Math.toRadians(90));
 
     void nextTraj(Constants.autoStates state){
 
@@ -28,7 +28,7 @@ public class BlueHighAuto extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         Trajectory forward = drive.trajectoryBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(39.5, -55.6, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(36, -55.6, Math.toRadians(180)))
                 .build();
 
         Trajectory park = drive.trajectoryBuilder(forward.end())
