@@ -9,12 +9,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 
-@Autonomous(name = "AutoOpBlueTop")
-public class BlueHighAuto extends LinearOpMode {
+@Autonomous(name = "AutoOpRedBottom")
+public class RedLowAuto extends LinearOpMode {
     SampleMecanumDrive drive;
     Constants.autoStates currentTraj = Constants.autoStates.idle;
 
-    Pose2d startPose = new Pose2d(39.5, -59.6, Math.toRadians(90));
+    Pose2d startPose = new Pose2d(-17.5, 59.6, Math.toRadians(270));
 
     void nextTraj(Constants.autoStates state){
 
@@ -27,12 +27,8 @@ public class BlueHighAuto extends LinearOpMode {
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
 
-        Trajectory forward = drive.trajectoryBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(39.5, -55.6, Math.toRadians(180)))
-                .build();
-
-        Trajectory park = drive.trajectoryBuilder(forward.end())
-                .lineTo(new Vector2d(-54, -55.6))
+        Trajectory park = drive.trajectoryBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(-54, 55.6, Math.toRadians(180)))
                 .build();
 
         waitForStart();
@@ -49,14 +45,10 @@ public class BlueHighAuto extends LinearOpMode {
 
             switch(currentTraj) {
                 case ready:
-                    sleep((10000));
                     nextTraj(Constants.autoStates.forward);
                     break;
                 case forward:
-                    if (!drive.isBusy()) {
-                        drive.followTrajectory(forward);
-                        nextTraj(Constants.autoStates.park);
-                    }
+                    nextTraj(Constants.autoStates.park);
                     break;
                 case park:
                     if (!drive.isBusy()) {

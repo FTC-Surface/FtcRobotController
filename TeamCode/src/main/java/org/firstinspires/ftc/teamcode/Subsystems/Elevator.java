@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Elevator {
     public DcMotorEx LeftMot;
@@ -43,5 +46,9 @@ public class Elevator {
                 LeftMot.setPower(-1);
                 RightMot.setPower(1);
         }
+    }
+
+    public int getPosition() {
+        return ((RightMot.getCurrentPosition() - LeftMot.getCurrentPosition())/2);
     }
 }

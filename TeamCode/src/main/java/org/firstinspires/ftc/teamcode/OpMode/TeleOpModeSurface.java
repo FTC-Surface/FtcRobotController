@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Subsystems.AirPlaneLauncher;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 
@@ -41,7 +41,7 @@ public class TeleOpModeSurface extends LinearOpMode {
         elevator.init(hardwareMap);
         int height = 0;
 
-        launcher.init(hardwareMap);
+        //launcher.init(hardwareMap);
 
         waitForStart();
         while (opModeIsActive() && !isStopRequested()) {
@@ -52,6 +52,7 @@ public class TeleOpModeSurface extends LinearOpMode {
             telemetry.addData("Back Right: ", bottomRightMotor.getPower());
             telemetry.addData("ElevMotLeft: ", elevator.LeftMot.getCurrentPosition());
             telemetry.addData("ElevMotRight: ", elevator.RightMot.getCurrentPosition());
+            telemetry.addData("Height", height);
             telemetry.update();
             /* drive is for forward/backward
            strafe is for left/right
@@ -95,23 +96,31 @@ public class TeleOpModeSurface extends LinearOpMode {
                 elevator.moveLift(Constants.elevStates.down, 100);
             }
             if(gamepad1.left_bumper){
-                elevator.moveLift(Constants.elevStates.up, height + 100);
-                height += 13;
+                if(height <= 7000){
+                    elevator.moveLift(Constants.elevStates.up, height + 100);
+                    height += 13;
+                    telemetry.update();
+                }
             }
-            if(gamepad1.left_trigger > 0.3 && height > 0){
-                elevator.moveLift(Constants.elevStates.down, height - 100);
-                height -= 13;
+            if(gamepad1.left_trigger > 0.3){
+                if(height >= 0){
+                    elevator.moveLift(Constants.elevStates.down, height - 100);
+                    height -= 50;
+                    telemetry.update();
+                }
             }
 
+            height = elevator.getPosition();
 
-            if(gamepad1.a){
+
+            /*if(gamepad1.a){
                 launcher.launchPlane();
                 sleep((350));
             }
             if(gamepad1.b){
                 launcher.reset();
                 sleep((350));
-            }
+            }*/
         }
     }
 }

@@ -9,12 +9,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 
-@Autonomous(name = "AutoOpBlueTop")
-public class BlueHighAuto extends LinearOpMode {
+@Autonomous(name = "AutoOpRedTop")
+public class RedHighAuto extends LinearOpMode {
     SampleMecanumDrive drive;
     Constants.autoStates currentTraj = Constants.autoStates.idle;
 
-    Pose2d startPose = new Pose2d(39.5, -59.6, Math.toRadians(90));
+    Pose2d startPose = new Pose2d(39.5, 59.6, Math.toRadians(270));
 
     void nextTraj(Constants.autoStates state){
 
@@ -28,11 +28,11 @@ public class BlueHighAuto extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         Trajectory forward = drive.trajectoryBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(39.5, -55.6, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(39.5, 55.6, Math.toRadians(180)))
                 .build();
 
         Trajectory park = drive.trajectoryBuilder(forward.end())
-                .lineTo(new Vector2d(-54, -55.6))
+                .lineTo(new Vector2d(-54, 55.6))
                 .build();
 
         waitForStart();
