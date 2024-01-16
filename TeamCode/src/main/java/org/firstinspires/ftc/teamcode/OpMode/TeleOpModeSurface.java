@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Subsystems.AirPlaneLauncher;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
@@ -41,6 +42,8 @@ public class TeleOpModeSurface extends LinearOpMode {
         elevator.init(hardwareMap);
         int height = 0;
 
+        launcher.init(hardwareMap);
+
         //launcher.init(hardwareMap);
 
         waitForStart();
@@ -64,10 +67,10 @@ public class TeleOpModeSurface extends LinearOpMode {
 
             //This gives us the speed for the various motors.
             double[] speed = {
-                    (drive - strafe - (twist * 0.7)),
-                    (drive + strafe + (twist * 0.7)),
-                    (drive + strafe - (twist * 0.7)),
-                    (drive - strafe + (twist * 0.7))};
+                    ((drive * 0.9) - (strafe * 0.9) - (twist * 0.7)),
+                    ((drive * 0.9) + (strafe * 0.9) + (twist * 0.7)),
+                    ((drive * 0.9) + (strafe * 0.9) - (twist * 0.7)),
+                    ((drive * 0.9) - (strafe * 0.9) + (twist * 0.7))};
 
             //Calculate the maximum/largest speed of all the motors
             double max = Math.abs(speed[0]);
@@ -105,22 +108,16 @@ public class TeleOpModeSurface extends LinearOpMode {
             if(gamepad1.left_trigger > 0.3){
                 if(height >= 0){
                     elevator.moveLift(Constants.elevStates.down, height - 100);
-                    height -= 50;
+                    height -= 13;
                     telemetry.update();
                 }
             }
 
             height = elevator.getPosition();
 
-
-            /*if(gamepad1.a){
-                launcher.launchPlane();
-                sleep((350));
+            if(gamepad1.x){
+                launcher.launcher(Constants.launchStates.reset);
             }
-            if(gamepad1.b){
-                launcher.reset();
-                sleep((350));
-            }*/
         }
     }
 }

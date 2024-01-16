@@ -28,7 +28,7 @@ public class RedHighAuto extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         Trajectory forward = drive.trajectoryBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(39.5, 55.6, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(36, 55.6, Math.toRadians(180)))
                 .build();
 
         Trajectory park = drive.trajectoryBuilder(forward.end())

@@ -12,4 +12,9 @@ public class Constants {
         up,
         down
     }
+
+    public enum launchStates{
+        launch,
+        reset
+    }
 }

@@ -28,7 +28,7 @@ public class RedLowAuto extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         Trajectory park = drive.trajectoryBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(-54, 55.6, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-52, 58.6, Math.toRadians(180)))
                 .build();
 
         waitForStart();
