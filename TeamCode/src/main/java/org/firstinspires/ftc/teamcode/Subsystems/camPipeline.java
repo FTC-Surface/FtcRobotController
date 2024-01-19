@@ -2,46 +2,52 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.opencv.core.Core;
-import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 
 public class camPipeline extends OpenCvPipeline {
 
     Mat mainMat = new Mat();
-    Mat zone1;
-    Mat zone2;
-    Mat zone3;
+    public int zoneNum;
 
-    Scalar zone1RGB;
-    Scalar zone2RGB;
-    Scalar zone3RGB;
+    private Mat zoneRight, zoneMiddle, zoneLeft;
 
-    int zoneNum;
+    private double rightVal, midVal, leftVal;
+
+    private Rect leftRect, midRect, rightRect;
+
     @Override
     public Mat processFrame(Mat input) {
-        mainMat = input.clone();
+        Imgproc.cvtColor(input, mainMat, Imgproc.COLOR_RGB2HSV);
 
-        zone1 = input.submat(new Rect());
-        zone2 = input.submat(new Rect());
-        zone3 = input.submat(new Rect());
+        Scalar redLowHSV = new Scalar(0, 70, 50);
+        Scalar redHighHSV = new Scalar(0, 255, 255);
 
-        zone1RGB = Core.mean(zone1);
-        zone2RGB = Core.mean(zone2);
-        zone3RGB = Core.mean(zone3);
+        Core.inRange(mainMat, redLowHSV, redHighHSV, mainMat);
 
-        if(zone1RGB.val[2] > zone2RGB.val[2]){
-            if(zone1RGB.val[2] > zone3RGB.val[3]){
-                zoneNum = 1;
-            }
-            else if(zone1RGB.val[2] < zone3RGB.val[3]){
-                zoneNum = 2;
-            }
-        } else {
-                zoneNum = 3;
+        zoneLeft = mainMat.submat();
+        zoneMiddle = mainMat.submat();
+        zoneRight = mainMat.submat();
+
+        leftVal = Core.mean(zoneLeft).val[0];
+        midVal = Core.mean(zoneMiddle).val[0];
+        rightVal = Core.mean(zoneRight).val[0];
+
+        double firstMax = Math.max(leftVal, rightVal);
+        double finalMax = Math.max(firstMax, midVal);
+
+        if(finalMax == leftVal){
+            zoneNum = 0;
+        } else if(finalMax == rightVal){
+            zoneNum = 1;
+        } else if(finalMax == midVal){
+            zoneNum = 2;
         }
-        return(null);
+
+        return input;
     }
 
     public int zone(){

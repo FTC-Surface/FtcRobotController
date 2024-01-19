@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -16,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.camPipeline;
 public class Cam extends LinearOpMode {
     public OpenCvWebcam kamera = null;
     public final int camLength = 240;
-    public final int camWidth = 360;
+    public final int camWidth = 320;
     public camPipeline pipeline;
 
     public void init(HardwareMap hardwareMap){
@@ -53,7 +54,7 @@ public class Cam extends LinearOpMode {
     }
 
     public int getZone(){
-        return pipeline.zone();
+        return pipeline.zoneNum;
     }
 
     @Override

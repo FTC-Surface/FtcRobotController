@@ -17,4 +17,10 @@ public class Constants {
         launch,
         reset
     }
+
+    public enum teamPropLocation{
+        left,
+        right,
+        middle
+    }
 }
