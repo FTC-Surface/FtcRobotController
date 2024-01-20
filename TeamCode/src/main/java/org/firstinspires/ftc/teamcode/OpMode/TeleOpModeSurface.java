@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Subsystems.AirPlaneLauncher;
+import org.firstinspires.ftc.teamcode.Subsystems.Cam;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
@@ -20,6 +21,8 @@ public class TeleOpModeSurface extends LinearOpMode {
     DcMotorEx topLeftMotor, topRightMotor, bottomLeftMotor, bottomRightMotor;
     Elevator elevator = new Elevator();
     AirPlaneLauncher launcher = new AirPlaneLauncher();
+
+    Cam cam = new Cam();
 
     public void runOpMode(){
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());

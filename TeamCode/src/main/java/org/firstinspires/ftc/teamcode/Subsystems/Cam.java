@@ -15,9 +15,9 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 import org.firstinspires.ftc.teamcode.Subsystems.camPipeline;
 public class Cam extends LinearOpMode {
-    public OpenCvWebcam kamera = null;
-    public final int camLength = 240;
-    public final int camWidth = 320;
+    public OpenCvWebcam kamera;
+    public final int camLength = 720;
+    public final int camWidth = 1280;
     public camPipeline pipeline;
 
     public void init(HardwareMap hardwareMap){
@@ -35,7 +35,8 @@ public class Cam extends LinearOpMode {
                     getInstance().
                         createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
 
-        kamera.setPipeline(new camPipeline());
+        pipeline = new camPipeline();
+        kamera.setPipeline(pipeline);
 
         kamera.openCameraDeviceAsync(
                 new OpenCvCamera.AsyncCameraOpenListener() {
@@ -54,7 +55,7 @@ public class Cam extends LinearOpMode {
     }
 
     public int getZone(){
-        return pipeline.zoneNum;
+        return pipeline.zone();
     }
 
     @Override
