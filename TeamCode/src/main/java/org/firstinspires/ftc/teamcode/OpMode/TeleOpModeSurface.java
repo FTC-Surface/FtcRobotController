@@ -8,11 +8,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.robotcore.external.Const;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Subsystems.AirPlaneLauncher;
-import org.firstinspires.ftc.teamcode.Subsystems.Cam;
+import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
+import org.firstinspires.ftc.teamcode.Subsystems.Leveller;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 
@@ -20,9 +18,10 @@ import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 public class TeleOpModeSurface extends LinearOpMode {
     DcMotorEx topLeftMotor, topRightMotor, bottomLeftMotor, bottomRightMotor;
     Elevator elevator = new Elevator();
-    AirPlaneLauncher launcher = new AirPlaneLauncher();
 
-    Cam cam = new Cam();
+    Claw claw = new Claw();
+
+    Leveller leveller = new Leveller();
 
     public void runOpMode(){
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -45,11 +44,14 @@ public class TeleOpModeSurface extends LinearOpMode {
         elevator.init(hardwareMap);
         int height = 0;
 
-        launcher.init(hardwareMap);
+        claw.init(hardwareMap);
 
-        //launcher.init(hardwareMap);
+        leveller.init(hardwareMap);
 
         waitForStart();
+
+        telemetry.update();
+
         while (opModeIsActive() && !isStopRequested()) {
 
             telemetry.addData("Front Left: ", topLeftMotor.getPower());
@@ -58,6 +60,8 @@ public class TeleOpModeSurface extends LinearOpMode {
             telemetry.addData("Back Right: ", bottomRightMotor.getPower());
             telemetry.addData("ElevMotLeft: ", elevator.LeftMot.getCurrentPosition());
             telemetry.addData("ElevMotRight: ", elevator.RightMot.getCurrentPosition());
+            telemetry.addData("ClawLeftPos: ", claw.clawL.getPosition());
+            telemetry.addData("ClawRightPos: ", claw.clawR.getPosition());
             telemetry.addData("Height", height);
             telemetry.update();
             /* drive is for forward/backward
@@ -95,6 +99,13 @@ public class TeleOpModeSurface extends LinearOpMode {
             bottomLeftMotor.setPower(speed[2]);
             bottomRightMotor.setPower(speed[3]);
 
+            if(gamepad1.a){
+                claw.open();
+            }
+            if(gamepad1.b){
+                claw.close();
+            }
+
             if(gamepad1.dpad_up){
                 elevator.moveLift(Constants.elevStates.up, 6000);
             }
@@ -118,9 +129,6 @@ public class TeleOpModeSurface extends LinearOpMode {
 
             height = elevator.getPosition();
 
-            if(gamepad1.x){
-                launcher.launcher(Constants.launchStates.reset);
-            }
         }
     }
 }

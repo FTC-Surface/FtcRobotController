@@ -13,11 +13,6 @@ public class Constants {
         down
     }
 
-    public enum launchStates{
-        launch,
-        reset
-    }
-
     public enum cameraColor{
         red,
         blue

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Point;
@@ -9,9 +8,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import org.opencv.core.Core;
 import org.opencv.core.Scalar;
 
-import java.util.Vector;
-
-public class camPipeline extends OpenCvPipeline {
+public class CamPipeline extends OpenCvPipeline {
     int zoneNum;
 
     Scalar highHSV;
@@ -38,7 +35,7 @@ public class camPipeline extends OpenCvPipeline {
 
     Constants.cameraColor teamColor;
 
-    public camPipeline(Constants.cameraColor color){
+    public CamPipeline(Constants.cameraColor color){
         teamColor = color;
     }
 

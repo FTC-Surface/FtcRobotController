@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -13,14 +12,11 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-import org.firstinspires.ftc.teamcode.Subsystems.camPipeline;
-import org.yaml.snakeyaml.scanner.Constant;
-
 public class Cam extends LinearOpMode {
     public OpenCvWebcam kamera;
     public final int camLength = 720;
     public final int camWidth = 1280;
-    public camPipeline pipeline;
+    public CamPipeline pipeline;
 
     public void init(HardwareMap hardwareMap, Constants.cameraColor color){
 
@@ -37,7 +33,7 @@ public class Cam extends LinearOpMode {
                     getInstance().
                         createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
 
-        pipeline = new camPipeline(color);
+        pipeline = new CamPipeline(color);
         kamera.setPipeline(pipeline);
 
         kamera.openCameraDeviceAsync(

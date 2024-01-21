@@ -11,10 +11,10 @@ public class Elevator {
     public DcMotorEx LeftMot;
     public DcMotorEx RightMot;
 
-    public void init(HardwareMap map){
-        LeftMot = map.get(DcMotorEx.class, "elevMotorLeft");
+    public void init(HardwareMap hardwareMap){
+        LeftMot = hardwareMap.get(DcMotorEx.class, "elevMotorLeft");
         LeftMot.setDirection(DcMotorSimple.Direction.REVERSE);
-        RightMot = map.get(DcMotorEx.class, "elevMotorRight");
+        RightMot = hardwareMap.get(DcMotorEx.class, "elevMotorRight");
         RightMot.setDirection(DcMotorSimple.Direction.REVERSE);
 
         LeftMot.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
