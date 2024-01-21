@@ -13,7 +13,7 @@ public class camTest extends LinearOpMode {
     Cam camera = new Cam();
 
     public void runOpMode(){
-        camera.init(hardwareMap);
+        camera.init(hardwareMap, Constants.cameraColor.red);
 
         int zone = 3;
 
@@ -27,8 +27,5 @@ public class camTest extends LinearOpMode {
 
         telemetry.addData("Parking Zone: ", zone);
         telemetry.update();
-
-        camera.kamera.stopStreaming();
-        camera.kamera.stopRecordingPipeline();
     }
 }

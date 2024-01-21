@@ -14,13 +14,15 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 import org.firstinspires.ftc.teamcode.Subsystems.camPipeline;
+import org.yaml.snakeyaml.scanner.Constant;
+
 public class Cam extends LinearOpMode {
     public OpenCvWebcam kamera;
     public final int camLength = 720;
     public final int camWidth = 1280;
     public camPipeline pipeline;
 
-    public void init(HardwareMap hardwareMap){
+    public void init(HardwareMap hardwareMap, Constants.cameraColor color){
 
         int cameraMonitorViewId =
                 hardwareMap
@@ -35,7 +37,7 @@ public class Cam extends LinearOpMode {
                     getInstance().
                         createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
 
-        pipeline = new camPipeline();
+        pipeline = new camPipeline(color);
         kamera.setPipeline(pipeline);
 
         kamera.openCameraDeviceAsync(

@@ -14,22 +14,33 @@ import java.util.Vector;
 public class camPipeline extends OpenCvPipeline {
     int zoneNum;
 
+    Scalar highHSV;
+    Scalar lowHSV;
+
     private Mat zoneRight, zoneMiddle, zoneLeft;
 
     private double rightVal, midVal, leftVal;
 
     static final Rect leftRect = new Rect(
-            new Point(0, 100),
-            new Point(120, 240));
+            new Point(0, 150),
+            new Point(420, 720));
 
     static final Rect midRect = new Rect(
-            new Point(120, 100),
-            new Point(240, 240));
+            new Point(420, 150),
+            new Point(840, 720));
     static final Rect rightRect = new Rect(
-            new Point(240, 100),
-            new Point(320, 240));
+            new Point(840, 150),
+            new Point(1280, 720));
 
     static final Scalar BLUE = new Scalar(0, 0, 255);
+    static final Scalar RED = new Scalar(255, 0, 0);
+    static final Scalar GREEN = new Scalar(0, 255, 0);
+
+    Constants.cameraColor teamColor;
+
+    public camPipeline(Constants.cameraColor color){
+        teamColor = color;
+    }
 
     @Override
     public Mat processFrame(Mat input) {
@@ -43,14 +54,35 @@ public class camPipeline extends OpenCvPipeline {
             return input;
         }
 
-        Scalar redLowHSV = new Scalar(0, 70, 50);
-        Scalar redHighHSV = new Scalar(0, 255, 255);
+        if(teamColor == Constants.cameraColor.red){
+            lowHSV = new Scalar(160, 50, 50);
+            highHSV = new Scalar(180, 255, 255);
+        } else if (teamColor == Constants.cameraColor.blue){
+            lowHSV = new Scalar(100, 150, 0);
+            highHSV = new Scalar(140, 255, 255);
+        }
 
-        Core.inRange(mainMat, redLowHSV, redHighHSV, mainMat);
+        Core.inRange(mainMat, lowHSV, highHSV, mainMat);
 
         zoneLeft = mainMat.submat(leftRect);
         zoneMiddle = mainMat.submat(midRect);
         zoneRight = mainMat.submat(rightRect);
+
+        Imgproc.rectangle(
+                input,
+                leftRect,
+                BLUE,
+                1);
+        Imgproc.rectangle(
+                input,
+                midRect,
+                RED,
+                1);
+        Imgproc.rectangle(
+                input,
+                rightRect,
+                GREEN,
+                1);
 
         leftVal = Core.mean(zoneLeft).val[0];
         midVal = Core.mean(zoneMiddle).val[0];
@@ -58,26 +90,6 @@ public class camPipeline extends OpenCvPipeline {
 
         double firstMax = Math.max(leftVal, rightVal);
         double finalMax = Math.max(firstMax, midVal);
-
-        Imgproc.rectangle(
-                input,
-                new Point(0, 100),
-                new Point(120, 240),
-                BLUE,
-                1);
-        Imgproc.rectangle(
-                input,
-                new Point(120, 100),
-                new Point(240, 240),
-                BLUE,
-                1);
-        Imgproc.rectangle(
-                input,
-                new Point(240, 100),
-                new Point(320, 240),
-                BLUE,
-                1);
-
 
         if(finalMax == leftVal){
             zoneNum = 0;
@@ -88,6 +100,10 @@ public class camPipeline extends OpenCvPipeline {
         } else{
             zoneNum = 3;
         }
+
+        mainMat.copyTo(input);
+        mainMat.release();
+
         return input;
     }
 

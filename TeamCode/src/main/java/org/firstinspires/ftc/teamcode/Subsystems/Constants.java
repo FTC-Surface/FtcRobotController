@@ -17,4 +17,9 @@ public class Constants {
         launch,
         reset
     }
+
+    public enum cameraColor{
+        red,
+        blue
+    }
 }

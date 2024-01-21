@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.teamcode.Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Cam;
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
@@ -21,7 +22,7 @@ public class SampleAutoOp extends LinearOpMode {
     }
 
     public void runOpMode(){
-        cam.init(hardwareMap);
+        cam.init(hardwareMap, Constants.cameraColor.blue);
         drive = new SampleMecanumDrive(hardwareMap);
 
         int zone;
