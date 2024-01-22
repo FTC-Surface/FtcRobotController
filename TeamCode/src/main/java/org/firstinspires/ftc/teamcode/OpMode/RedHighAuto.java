@@ -8,11 +8,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
+import org.firstinspires.ftc.teamcode.Subsystems.Cam;
 
 @Autonomous(name = "AutoOpRedTop")
 public class RedHighAuto extends LinearOpMode {
     SampleMecanumDrive drive;
     Constants.autoStates currentTraj = Constants.autoStates.idle;
+
+    Cam camera = new Cam();
 
     Pose2d startPose = new Pose2d(36, 59.6, Math.toRadians(270));
 
@@ -24,6 +27,9 @@ public class RedHighAuto extends LinearOpMode {
     }
 
     public void runOpMode(){
+        camera.init(hardwareMap, Constants.cameraColor.red);
+        int propZone = 3;
+
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
 
@@ -35,7 +41,16 @@ public class RedHighAuto extends LinearOpMode {
                 .lineTo(new Vector2d(-54, 55.6))
                 .build();
 
+        while (opModeInInit()) {
+            propZone = camera.getZone();
+            telemetry.addData("Parking Zone: ", propZone);
+            telemetry.update();
+        }
+
         waitForStart();
+
+        camera.kamera.stopStreaming();
+        camera.kamera.stopRecordingPipeline();
 
         currentTraj = Constants.autoStates.ready;
 

@@ -8,7 +8,7 @@ public class Constants {
         park
     }
 
-    public enum elevStates{
+    public enum upDownStates{
         up,
         down
     }
@@ -17,4 +17,14 @@ public class Constants {
         red,
         blue
     }
+
+    final double rClawClose = 0.5;
+    final double lClawClose = 0.1;
+    final double rClawOpen = 0.175;
+    final double lClawOpen = 0.425;
+
+    final double rClawHolderRotate = 1;
+    final double lClawHolderRotate = 1;
+    final double rClawHolderReset = 0;
+    final double lClawHolderReset = 0;
 }

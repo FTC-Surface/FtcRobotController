@@ -24,7 +24,7 @@ public class Elevator {
         RightMot.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void moveLift(Constants.elevStates state,int height){
+    public void moveLift(Constants.upDownStates state, int height){
         switch (state){
             case up:
                 LeftMot.setTargetPosition(-height);

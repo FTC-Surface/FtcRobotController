@@ -98,9 +98,6 @@ public class CamPipeline extends OpenCvPipeline {
             zoneNum = 3;
         }
 
-        mainMat.copyTo(input);
-        mainMat.release();
-
         return input;
     }
 
