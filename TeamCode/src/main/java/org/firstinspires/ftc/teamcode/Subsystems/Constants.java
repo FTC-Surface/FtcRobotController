@@ -18,13 +18,13 @@ public class Constants {
         blue
     }
 
-    final double rClawClose = 0.5;
-    final double lClawClose = 0.1;
-    final double rClawOpen = 0.175;
-    final double lClawOpen = 0.425;
+    final double rClawClose = 0.57;
+    final double lClawClose = 0.05;
+    final double rClawOpen = 0.36;
+    final double lClawOpen = 0.3;
 
-    final double rClawHolderRotate = 1;
-    final double lClawHolderRotate = 1;
-    final double rClawHolderReset = 0;
-    final double lClawHolderReset = 0;
+    final double rClawHolderRotate = 0.175;
+    final double lClawHolderRotate = 0.275;
+    final double rClawHolderReset = 0.815;
+    final double lClawHolderReset = 0.93;
 }

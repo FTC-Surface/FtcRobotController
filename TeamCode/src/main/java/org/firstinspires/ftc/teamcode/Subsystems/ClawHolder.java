@@ -10,17 +10,19 @@ public class ClawHolder {
     public Servo clawHolderL;
 
     public void init(HardwareMap hardwareMap){
-        clawHolderR = hardwareMap.get(Servo.class, "RightClawHolder");
-        clawHolderL = hardwareMap.get(Servo.class, "LeftClawHolder");
+        clawHolderR = hardwareMap.get(Servo.class, "rightClawHolder");
+        clawHolderL = hardwareMap.get(Servo.class, "leftClawHolder");
+
+        clawHolderR.setDirection(Servo.Direction.REVERSE);
     }
 
     public void rotate(){
+        //clawHolderR.setPosition(constants.rClawHolderRotate);
         clawHolderL.setPosition(constants.lClawHolderRotate);
-        clawHolderR.setPosition(constants.rClawHolderRotate);
     }
 
     public void reset(){
+        //clawHolderR.setPosition(constants.rClawHolderReset);
         clawHolderL.setPosition(constants.lClawHolderReset);
-        clawHolderR.setPosition(constants.rClawHolderReset);
     }
 }

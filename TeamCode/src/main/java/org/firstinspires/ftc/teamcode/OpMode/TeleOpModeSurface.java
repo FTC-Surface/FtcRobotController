@@ -8,12 +8,27 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.R;
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.ClawHolder;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
-import org.firstinspires.ftc.teamcode.Subsystems.Leveller;
+import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
+
+/*
+ ExpansionHub
+ backRight is 0 (deadwheelRight goes to 0)
+ frontRight is 1
+ arm is 2
+ rightLift is 3
+
+ ControlHub
+ backLeft is 0 (deadwheelLeft goes to 0)
+ frontLeft goes to 1 (deadwheelLater goes to 1)
+ leftElevator got to 2
+
+ */
 
 @TeleOp(name = "Mecanum Drive")
 public class TeleOpModeSurface extends LinearOpMode {
@@ -24,7 +39,7 @@ public class TeleOpModeSurface extends LinearOpMode {
 
     ClawHolder clawHolder = new ClawHolder();
 
-    Leveller leveller = new Leveller();
+    Arm armLeveller = new Arm();
 
     public void runOpMode(){
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -34,24 +49,27 @@ public class TeleOpModeSurface extends LinearOpMode {
         bottomLeftMotor = hardwareMap.get(DcMotorEx.class, "bottomLeft");
         bottomRightMotor = hardwareMap.get(DcMotorEx.class, "bottomRight");
 
-        topLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        bottomLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        topRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        bottomRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
         topLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         topRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bottomLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bottomRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        bottomRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        topRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         elevator.init(hardwareMap);
         int height = 0;
 
         claw.init(hardwareMap);
 
-        leveller.init(hardwareMap);
+        armLeveller.init(hardwareMap);
+
+        clawHolder.init(hardwareMap);
 
         waitForStart();
+
+        claw.open();
+        clawHolder.reset();
 
         telemetry.update();
 
@@ -64,21 +82,24 @@ public class TeleOpModeSurface extends LinearOpMode {
             telemetry.addData("ElevMotLeft: ", elevator.LeftMot.getCurrentPosition());
             telemetry.addData("ElevMotRight: ", elevator.RightMot.getCurrentPosition());
             telemetry.addData("Height", height);
+            telemetry.addData("servoLeft: ", clawHolder.clawHolderL.getPosition());
+            telemetry.addData("servoRight: ", clawHolder.clawHolderR.getPosition());
+            telemetry.addData("Arm Pos: ", armLeveller.arm.getCurrentPosition());
             telemetry.update();
+
             /* drive is for forward/backward
            strafe is for left/right
-           twist is to turn
-         */
+           twist is to turn */
             double drive = gamepad1.left_stick_y;
             double strafe = gamepad1.left_stick_x;
             double twist = gamepad1.right_stick_x;
 
             //This gives us the speed for the various motors.
             double[] speed = {
-                    ((drive * 0.85) - (strafe * 0.85) - (twist * 0.7)),
-                    ((drive * 0.85) + (strafe * 0.85) + (twist * 0.7)),
                     ((drive * 0.85) + (strafe * 0.85) - (twist * 0.7)),
-                    ((drive * 0.85) - (strafe * 0.85) + (twist * 0.7))};
+                    ((drive * 0.85) - (strafe * 0.85) + (twist * 0.7)),
+                    ((drive * 0.85) - (strafe * 0.85) - (twist * 0.7)),
+                    ((drive * 0.85) + (strafe * 0.85) + (twist * 0.7))};
 
             //Calculate the maximum/largest speed of all the motors
             double max = Math.abs(speed[0]);
@@ -121,24 +142,24 @@ public class TeleOpModeSurface extends LinearOpMode {
 //**************************************************************************************************************************************************************************************************************************************************
 
             if(gamepad1.right_bumper){
-                leveller.moveLeveller(500);
+                armLeveller.moveLeveller(600, 0.8);
             }
 
             if(gamepad1.right_trigger > 0.3){
-                leveller.moveLeveller(25);
+                armLeveller.moveLeveller(10, 0.2);
             }
 
 //**************************************************************************************************************************************************************************************************************************************************
 
             if(gamepad1.dpad_up){
-                elevator.moveLift(Constants.upDownStates.up, 6000);
+                elevator.moveLift(Constants.upDownStates.up, 2400);
             }
             if(gamepad1.dpad_down){
                 elevator.moveLift(Constants.upDownStates.down, 100);
             }
 
             if(gamepad1.left_bumper){
-                if(height <= 7000){
+                if(height <= 2450){
                     elevator.moveLift(Constants.upDownStates.up, height + 100);
                     height += 13;
                     telemetry.update();

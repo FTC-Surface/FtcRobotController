@@ -25,4 +25,20 @@ public class Claw {
         clawR.setPosition(constants.rClawOpen);
         clawL.setPosition(constants.lClawOpen);
     }
+
+    public void rOpen(){
+        clawR.setPosition(constants.rClawOpen);
+    }
+
+    public void rClose(){
+        clawR.setPosition(constants.rClawClose);
+    }
+
+    public void lOpen(){
+        clawL.setPosition(constants.lClawOpen);
+    }
+
+    public void lClose(){
+        clawL.setPosition(constants.lClawClose);
+    }
 }

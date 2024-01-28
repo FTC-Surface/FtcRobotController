@@ -17,7 +17,7 @@ public class RedHighAuto extends LinearOpMode {
 
     Cam camera = new Cam();
 
-    Pose2d startPose = new Pose2d(36, 59.6, Math.toRadians(270));
+    Pose2d startPose = new Pose2d(-35, -59.6, Math.toRadians(90));
 
     void nextTraj(Constants.autoStates state){
 
