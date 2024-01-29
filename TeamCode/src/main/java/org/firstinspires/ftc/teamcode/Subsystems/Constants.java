@@ -23,8 +23,6 @@ public class Constants {
     final double rClawOpen = 0.36;
     final double lClawOpen = 0.3;
 
-    final double rClawHolderRotate = 0.175;
-    final double lClawHolderRotate = 0.275;
-    final double rClawHolderReset = 0.815;
-    final double lClawHolderReset = 0.93;
+    final double clawHolderRotate = 0.325;
+    final double clawHolderReset = 0.98;
 }

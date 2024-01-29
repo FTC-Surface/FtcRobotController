@@ -29,7 +29,7 @@ public class BlueLowAuto extends LinearOpMode {
 
     public void runOpMode(){
         kam.init(hardwareMap, Constants.cameraColor.blue);
-
+        claw.init(hardwareMap);
 
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);

@@ -8,6 +8,10 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+
+import org.firstinspires.ftc.teamcode.Subsystems.Claw;
+import org.firstinspires.ftc.teamcode.Subsystems.ClawHolder;
+
 @TeleOp(name = "Leveller Test Op")
 @Config
 public class LevellerTest extends OpMode{
@@ -18,29 +22,37 @@ public class LevellerTest extends OpMode{
 
     public static int targetPos = 0;
 
-    private final double ticks_in_degree = 537.7 / 180.0;
+    private final double ticks_in_degree = 537.7;
 
     DcMotorEx arm;
 
-    public static double height = 500;
+    Claw claw = new Claw();
+    ClawHolder clawHolder = new ClawHolder();
 
     @Override
     public void init(){
-        controller = new PIDController(p, i , d);
+        controller = new PIDController(p, i, d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         arm = hardwareMap.get(DcMotorEx.class, "levellerMotor");
         arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        claw.init(hardwareMap);
+        clawHolder.init(hardwareMap);
+
+        claw.close();
+        clawHolder.rotate();
     }
 
     @Override
     public void loop(){
         controller.setPID(p ,i ,d);
         int armPos = arm.getCurrentPosition();
-        double pid = controller.calculate(armPos - targetPos);
+        double pid = controller.calculate(armPos, targetPos);
         double ff = Math.cos(Math.toRadians(targetPos / ticks_in_degree)) * f;
 
-        double power= pid + ff;
+        double power = pid + ff;
+
         arm.setPower(power);
 
         telemetry.addData("pos", armPos);

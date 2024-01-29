@@ -82,9 +82,6 @@ public class TeleOpModeSurface extends LinearOpMode {
             telemetry.addData("ElevMotLeft: ", elevator.LeftMot.getCurrentPosition());
             telemetry.addData("ElevMotRight: ", elevator.RightMot.getCurrentPosition());
             telemetry.addData("Height", height);
-            telemetry.addData("servoLeft: ", clawHolder.clawHolderL.getPosition());
-            telemetry.addData("servoRight: ", clawHolder.clawHolderR.getPosition());
-            telemetry.addData("Arm Pos: ", armLeveller.arm.getCurrentPosition());
             telemetry.update();
 
             /* drive is for forward/backward
@@ -96,10 +93,10 @@ public class TeleOpModeSurface extends LinearOpMode {
 
             //This gives us the speed for the various motors.
             double[] speed = {
-                    ((drive * 0.85) + (strafe * 0.85) - (twist * 0.7)),
-                    ((drive * 0.85) - (strafe * 0.85) + (twist * 0.7)),
                     ((drive * 0.85) - (strafe * 0.85) - (twist * 0.7)),
-                    ((drive * 0.85) + (strafe * 0.85) + (twist * 0.7))};
+                    ((drive * 0.85) + (strafe * 0.85) + (twist * 0.7)),
+                    ((drive * 0.85) + (strafe * 0.85) - (twist * 0.7)),
+                    ((drive * 0.85) - (strafe * 0.85) + (twist * 0.7))};
 
             //Calculate the maximum/largest speed of all the motors
             double max = Math.abs(speed[0]);
@@ -152,14 +149,14 @@ public class TeleOpModeSurface extends LinearOpMode {
 //**************************************************************************************************************************************************************************************************************************************************
 
             if(gamepad1.dpad_up){
-                elevator.moveLift(Constants.upDownStates.up, 2400);
+                elevator.moveLift(Constants.upDownStates.up, 1770);
             }
             if(gamepad1.dpad_down){
-                elevator.moveLift(Constants.upDownStates.down, 100);
+                elevator.moveLift(Constants.upDownStates.down, 0);
             }
 
             if(gamepad1.left_bumper){
-                if(height <= 2450){
+                if(height <= 1770){
                     elevator.moveLift(Constants.upDownStates.up, height + 100);
                     height += 13;
                     telemetry.update();

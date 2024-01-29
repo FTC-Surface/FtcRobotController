@@ -6,23 +6,18 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class ClawHolder {
     Constants constants = new Constants();
 
-    public Servo clawHolderR;
-    public Servo clawHolderL;
+    public Servo clawHolder;
 
     public void init(HardwareMap hardwareMap){
-        clawHolderR = hardwareMap.get(Servo.class, "rightClawHolder");
-        clawHolderL = hardwareMap.get(Servo.class, "leftClawHolder");
-
-        clawHolderR.setDirection(Servo.Direction.REVERSE);
+        clawHolder = hardwareMap.get(Servo.class, "rightClawHolder");
+        clawHolder.setDirection(Servo.Direction.REVERSE);
     }
 
     public void rotate(){
-        //clawHolderR.setPosition(constants.rClawHolderRotate);
-        clawHolderL.setPosition(constants.lClawHolderRotate);
+        clawHolder.setPosition(constants.clawHolderRotate);
     }
 
     public void reset(){
-        //clawHolderR.setPosition(constants.rClawHolderReset);
-        clawHolderL.setPosition(constants.lClawHolderReset);
+        clawHolder.setPosition(constants.clawHolderReset);
     }
 }

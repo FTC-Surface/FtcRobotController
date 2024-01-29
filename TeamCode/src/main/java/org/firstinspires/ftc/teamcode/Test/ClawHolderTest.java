@@ -9,22 +9,18 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp(name = "Claw Holder Test Op")
 @Config
 public class ClawHolderTest extends LinearOpMode {
-    Servo clawHolderR;
-    Servo clawHolderL;
+    Servo clawHolder;
     public static double targetRight = 0.15;
-    public static double targetLeft = 0.415;
     public void runOpMode() {
 
-        clawHolderR = hardwareMap.get(Servo.class, "rightClawHolder");
-        clawHolderL = hardwareMap.get(Servo.class, "leftClawHolder");
+        clawHolder = hardwareMap.get(Servo.class, "rightClawHolder");
 
-        clawHolderR.setDirection(Servo.Direction.REVERSE);
+        clawHolder.setDirection(Servo.Direction.REVERSE);
 
         waitForStart();
 
         while (opModeIsActive() && !isStopRequested()) {
-            clawHolderR.setPosition(targetRight);
-             clawHolderL.setPosition(targetLeft);
+            clawHolder.setPosition(targetRight);
         }
     }
 }
