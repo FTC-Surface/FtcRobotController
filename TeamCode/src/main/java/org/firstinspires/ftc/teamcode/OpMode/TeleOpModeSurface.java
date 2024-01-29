@@ -26,7 +26,7 @@ public class TeleOpModeSurface extends LinearOpMode {
     Claw claw = new Claw();
     ClawHolder clawHolder = new ClawHolder();
     Arm armLeveller = new Arm();
-    AirplaneLancher airplaneLancher = new AirplaneLancher();
+    //AirplaneLancher airplaneLancher = new AirplaneLancher();
     Constants constants = new Constants();
 
     public void runOpMode(){
@@ -61,6 +61,7 @@ public class TeleOpModeSurface extends LinearOpMode {
 
         claw.open();
         clawHolder.reset(constants.clawHolderReset);
+        //airplaneLancher.reset();
 
         telemetry.update();
 
@@ -138,7 +139,7 @@ public class TeleOpModeSurface extends LinearOpMode {
 
             //Lift the arm up
             if(gamepad1.right_bumper){
-                armLeveller.moveLeveller(600, 0.8);
+                armLeveller.moveLeveller(500, 0.75);
             }
             //Reset the arm onto the ground.
             if(gamepad1.right_trigger > 0.3){
@@ -146,15 +147,11 @@ public class TeleOpModeSurface extends LinearOpMode {
             }
 
 //**************************************************************************************************************************************************************************************************************************************************
-
-            //Lift the arm up
+            /*
+            //Launch airplane
             if(gamepad1.right_stick_button){
                 airplaneLancher.launch();
-            }
-            //Reset the arm onto the ground.
-            if(gamepad1.left_stick_button){
-                airplaneLancher.reset();
-            }
+            }*/
 
 //**************************************************************************************************************************************************************************************************************************************************
 

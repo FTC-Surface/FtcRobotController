@@ -25,7 +25,8 @@ public class LevellerTest extends OpMode{
 
     private final double ticks_in_degree = 537.7;
 
-    DcMotorEx arm;
+    DcMotorEx armOne;
+    DcMotorEx armTwo;
 
     Claw claw = new Claw();
     ClawHolder clawHolder = new ClawHolder();
@@ -36,8 +37,11 @@ public class LevellerTest extends OpMode{
         controller = new PIDController(p, i, d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        arm = hardwareMap.get(DcMotorEx.class, "levellerMotor");
-        arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armOne = hardwareMap.get(DcMotorEx.class, "levellerMotor");
+        armOne.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        armTwo = hardwareMap.get(DcMotorEx.class, "levellerMotor");
+        armTwo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         claw.init(hardwareMap);
         clawHolder.init(hardwareMap);
@@ -49,13 +53,14 @@ public class LevellerTest extends OpMode{
     @Override
     public void loop(){
         controller.setPID(p ,i ,d);
-        int armPos = arm.getCurrentPosition();
+        int armPos = armOne.getCurrentPosition();
         double pid = controller.calculate(armPos, targetPos);
         //double ff = Math.cos(Math.toRadians(targetPos / ticks_in_degree)) * f;
 
         double power = pid /*+ ff*/;
 
-        arm.setPower(power);
+        armOne.setPower(power);
+        armTwo.setPower(-power);
 
         telemetry.addData("pos", armPos);
         telemetry.addData("target", targetPos);
