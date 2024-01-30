@@ -37,10 +37,10 @@ public class LevellerTest extends OpMode{
         controller = new PIDController(p, i, d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        armOne = hardwareMap.get(DcMotorEx.class, "levellerMotor");
+        armOne = hardwareMap.get(DcMotorEx.class, "armOneMotor");
         armOne.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        armTwo = hardwareMap.get(DcMotorEx.class, "levellerMotor");
+        armTwo = hardwareMap.get(DcMotorEx.class, "armTwoMotor");
         armTwo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         claw.init(hardwareMap);
