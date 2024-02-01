@@ -18,8 +18,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 public class LevellerTest extends OpMode{
     private PIDController controller;
 
-    public static double p = 0, i = 0, d = 0;
-    //public static double f = 0;
+    public static double p = 0.0025, i = 0, d = 0.0001;
+    public static double f = 0.1;
 
     public static int targetPos = 0;
 
@@ -47,7 +47,7 @@ public class LevellerTest extends OpMode{
         clawHolder.init(hardwareMap);
 
         claw.close();
-        clawHolder.rotate(constants.clawHolderRotate);
+        clawHolder.rotate();
     }
 
     @Override
@@ -55,9 +55,9 @@ public class LevellerTest extends OpMode{
         controller.setPID(p ,i ,d);
         int armPos = armOne.getCurrentPosition();
         double pid = controller.calculate(armPos, targetPos);
-        //double ff = Math.cos(Math.toRadians(targetPos / ticks_in_degree)) * f;
+        double ff = Math.cos(Math.toRadians(targetPos / ticks_in_degree)) * f;
 
-        double power = pid /*+ ff*/;
+        double power = pid + ff;
 
         armOne.setPower(power);
         armTwo.setPower(-power);

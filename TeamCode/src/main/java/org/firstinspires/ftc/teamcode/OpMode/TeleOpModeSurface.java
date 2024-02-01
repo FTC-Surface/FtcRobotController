@@ -60,12 +60,14 @@ public class TeleOpModeSurface extends LinearOpMode {
         //Start the robot off with the claw open and the claw holder on the ground. Update telemetry info
 
         claw.open();
-        clawHolder.reset(constants.clawHolderReset);
+        clawHolder.reset();
         //airplaneLancher.reset();
 
         telemetry.update();
 
         while (opModeIsActive() && !isStopRequested()) {
+
+            armLeveller.loop();
 
             //Telemetry for the robot. Used for testing and tuning.
             telemetry.addData("Front Left: ", topLeftMotor.getPower());
@@ -74,7 +76,9 @@ public class TeleOpModeSurface extends LinearOpMode {
             telemetry.addData("Back Right: ", bottomRightMotor.getPower());
             telemetry.addData("ElevMotLeft: ", elevator.LeftMot.getCurrentPosition());
             telemetry.addData("ElevMotRight: ", elevator.RightMot.getCurrentPosition());
-            telemetry.addData("Height", height);
+            telemetry.addData("Height: ", height);
+            telemetry.addData("Pos: ", armLeveller.armOne.getCurrentPosition());
+            telemetry.addData("powerMult: ", armLeveller.pMult);
             telemetry.update();
 
             /* drive is for forward/backward
@@ -128,22 +132,22 @@ public class TeleOpModeSurface extends LinearOpMode {
 
             //Rotate the claw over in order to place the pixels on the backdrop
             if(gamepad1.y){
-                clawHolder.rotate(constants.clawHolderRotate);
+                clawHolder.rotate();
             }
             //Reset the claw back onto the floor.
             if(gamepad1.x){
-                clawHolder.reset(constants.clawHolderReset);
+                clawHolder.reset();
             }
 
 //**************************************************************************************************************************************************************************************************************************************************
 
             //Lift the arm up
             if(gamepad1.right_bumper){
-                armLeveller.moveLeveller(500, 0.75);
+                armLeveller.setTargetPos(525);
             }
             //Reset the arm onto the ground.
             if(gamepad1.right_trigger > 0.3){
-                armLeveller.moveLeveller(10, 0.2);
+                armLeveller.setTargetPos(0);
             }
 
 //**************************************************************************************************************************************************************************************************************************************************

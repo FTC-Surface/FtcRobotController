@@ -20,13 +20,13 @@ public class CamPipeline extends OpenCvPipeline {
 
     static final Rect leftRect = new Rect(
             new Point(0, 150),
-            new Point(420, 720));
+            new Point(230, 720));
 
     static final Rect midRect = new Rect(
-            new Point(420, 150),
-            new Point(840, 720));
+            new Point(280, 150),
+            new Point(960, 720));
     static final Rect rightRect = new Rect(
-            new Point(840, 150),
+            new Point(1030, 150),
             new Point(1280, 720));
 
     static final Scalar BLUE = new Scalar(0, 0, 255);
@@ -97,6 +97,9 @@ public class CamPipeline extends OpenCvPipeline {
         } else{
             zoneNum = 3;
         }
+
+        mainMat.copyTo(input);
+        mainMat.release();
 
         return input;
     }

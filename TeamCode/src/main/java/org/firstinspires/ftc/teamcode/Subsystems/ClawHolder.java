@@ -13,11 +13,11 @@ public class ClawHolder {
         clawHolder.setDirection(Servo.Direction.REVERSE);
     }
 
-    public void rotate(double rotateNum){
-        clawHolder.setPosition(rotateNum);
+    public void rotate(){
+        clawHolder.setPosition(constants.clawHolderRotate);
     }
 
-    public void reset(double resetNum){
-        clawHolder.setPosition(resetNum);
+    public void reset(){
+        clawHolder.setPosition(constants.clawHolderReset);
     }
 }
