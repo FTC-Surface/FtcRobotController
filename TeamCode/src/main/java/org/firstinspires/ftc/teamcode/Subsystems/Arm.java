@@ -20,11 +20,8 @@ public class Arm{
     public DcMotorEx armOne;
     public DcMotorEx armTwo;
 
-    Constants.armState state;
-
     public void setTargetPos(int targetPos){
         this.targetPos = targetPos;
-        this.state = state;
     }
 
     public void init(HardwareMap hardwareMap){
@@ -46,6 +43,10 @@ public class Arm{
         if (targetPos == 0){
             ff = Math.sin(2 * Math.toRadians(targetPos / ticks_in_degree)) * fDown;
             pMult = 0.5;
+
+            if(armPos < 35){
+                pMult = 0;
+            }
         }
 
         double power = (pid + ff) * pMult;
