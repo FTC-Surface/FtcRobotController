@@ -29,6 +29,5 @@ public class Constants {
     public final double clawHolderRotate = 0.33;
     public final double clawHolderReset = 0.95;
 
-    public final double airplaneLaunch = 0;
-    public final double airplaneReset = 1;
+    public final double airplaneLaunch = 0.2;
 }

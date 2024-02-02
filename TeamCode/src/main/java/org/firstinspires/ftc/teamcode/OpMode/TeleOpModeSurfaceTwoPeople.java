@@ -26,7 +26,7 @@ public class TeleOpModeSurfaceTwoPeople extends LinearOpMode {
     Claw claw = new Claw();
     ClawHolder clawHolder = new ClawHolder();
     Arm armLeveller = new Arm();
-    //AirplaneLancher airplaneLancher = new AirplaneLancher();
+    AirplaneLancher airplaneLancher = new AirplaneLancher();
 
     public void runOpMode(){
         //Assign the motors and initialize the classes. Reverse the two right motors to get it working and also initialize telemetry.
@@ -54,30 +54,28 @@ public class TeleOpModeSurfaceTwoPeople extends LinearOpMode {
 
         clawHolder.init(hardwareMap);
 
+        airplaneLancher.init((hardwareMap));
+
         waitForStart();
 
         //Start the robot off with the claw open and the claw holder on the ground. Update telemetry info
 
         claw.open();
         clawHolder.reset();
-        //airplaneLancher.reset();
 
         telemetry.update();
 
         while (opModeIsActive() && !isStopRequested()) {
-
-            armLeveller.loop();
 
             //Telemetry for the robot. Used for testing and tuning.
             telemetry.addData("Front Left: ", topLeftMotor.getPower());
             telemetry.addData("Front Right: ", topRightMotor.getPower());
             telemetry.addData("Back Left: ", bottomLeftMotor.getPower());
             telemetry.addData("Back Right: ", bottomRightMotor.getPower());
-            telemetry.addData("ElevMotLeft: ", elevator.LeftMot.getCurrentPosition());
-            telemetry.addData("ElevMotRight: ", elevator.RightMot.getCurrentPosition());
-            telemetry.addData("Height: ", height);
-            telemetry.addData("Pos: ", armLeveller.armOne.getCurrentPosition());
-            telemetry.addData("powerMult: ", armLeveller.pMult);
+            telemetry.addData("ElevMotLeft: ", elevator.LeftMot.getPower());
+            telemetry.addData("ElevMotRight: ", elevator.RightMot.getPower());
+            telemetry.addData("ArmMotLeft: ", armLeveller.armTwo.getPower());
+            telemetry.addData("ArmMotRight: ", armLeveller.armOne.getPower());
             telemetry.update();
 
             /* drive is for forward/backward
@@ -139,6 +137,7 @@ public class TeleOpModeSurfaceTwoPeople extends LinearOpMode {
             }
 
 //**************************************************************************************************************************************************************************************************************************************************
+            armLeveller.loop();
 
             //Lift the arm up
             if(gamepad2.right_bumper){
@@ -150,7 +149,6 @@ public class TeleOpModeSurfaceTwoPeople extends LinearOpMode {
             }
 
 //**************************************************************************************************************************************************************************************************************************************************
-
             /*
             //Launch airplane
             if(gamepad2.dpad_right){

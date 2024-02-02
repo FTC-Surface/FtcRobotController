@@ -26,7 +26,7 @@ public class TeleOpModeSurface extends LinearOpMode {
     Claw claw = new Claw();
     ClawHolder clawHolder = new ClawHolder();
     Arm armLeveller = new Arm();
-    //AirplaneLancher airplaneLancher = new AirplaneLancher();
+    AirplaneLancher airplaneLancher = new AirplaneLancher();
     Constants constants = new Constants();
 
     public void runOpMode(){
@@ -55,13 +55,14 @@ public class TeleOpModeSurface extends LinearOpMode {
 
         clawHolder.init(hardwareMap);
 
+        airplaneLancher.init((hardwareMap));
+
         waitForStart();
 
         //Start the robot off with the claw open and the claw holder on the ground. Update telemetry info
 
         claw.open();
         clawHolder.reset();
-        //airplaneLancher.reset();
 
         telemetry.update();
 
@@ -74,11 +75,10 @@ public class TeleOpModeSurface extends LinearOpMode {
             telemetry.addData("Front Right: ", topRightMotor.getPower());
             telemetry.addData("Back Left: ", bottomLeftMotor.getPower());
             telemetry.addData("Back Right: ", bottomRightMotor.getPower());
-            telemetry.addData("ElevMotLeft: ", elevator.LeftMot.getCurrentPosition());
-            telemetry.addData("ElevMotRight: ", elevator.RightMot.getCurrentPosition());
-            telemetry.addData("Height: ", height);
-            telemetry.addData("Pos: ", armLeveller.armOne.getCurrentPosition());
-            telemetry.addData("powerMult: ", armLeveller.pMult);
+            telemetry.addData("ElevMotLeft: ", elevator.LeftMot.getPower());
+            telemetry.addData("ElevMotRight: ", elevator.RightMot.getPower());
+            telemetry.addData("ArmMotLeft: ", armLeveller.armTwo.getPower());
+            telemetry.addData("ArmMotRight: ", armLeveller.armOne.getPower());
             telemetry.update();
 
             /* drive is for forward/backward
@@ -151,11 +151,11 @@ public class TeleOpModeSurface extends LinearOpMode {
             }
 
 //**************************************************************************************************************************************************************************************************************************************************
-            /*
+
             //Launch airplane
-            if(gamepad1.right_stick_button){
+            if(gamepad1.dpad_right){
                 airplaneLancher.launch();
-            }*/
+            }
 
 //**************************************************************************************************************************************************************************************************************************************************
 

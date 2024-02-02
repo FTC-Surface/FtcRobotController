@@ -15,8 +15,4 @@ public class AirplaneLancher {
     public void launch(){
         airLaunch.setPosition(constants.airplaneLaunch);
     }
-
-    public void reset(){
-        airLaunch.setPosition(constants.airplaneReset);
-    }
 }

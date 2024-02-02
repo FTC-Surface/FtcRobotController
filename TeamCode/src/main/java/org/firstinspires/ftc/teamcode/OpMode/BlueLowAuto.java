@@ -71,20 +71,17 @@ public class BlueLowAuto extends LinearOpMode {
         }
 
         TrajectorySequence ready = drive.trajectorySequenceBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(12, 36, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(12, 33, Math.toRadians(270)))
                 .turn(Math.toRadians(turnDeg))
-                .addDisplacementMarker(() -> {
+                /*.addDisplacementMarker(() -> {
                     claw.rOpen();
-                })
-                .addDisplacementMarker(() -> {
-                    claw.lOpen();
-                })
+                })*/
                 .build();
 
-        Trajectory board = drive.trajectoryBuilder(ready.end())
+        TrajectorySequence board = drive.trajectorySequenceBuilder(ready.end())
                 .lineToLinearHeading(new Pose2d(boardVector, Math.toRadians(180)))
-                .addDisplacementMarker(() -> {
-                    arm.setTargetPos(550);
+                /*.addDisplacementMarker(() -> {
+                    arm.setTargetPos(5255);
                 })
                 .addDisplacementMarker(() -> {
                     elevator.moveLift(Constants.upDownStates.up, 100);
@@ -95,10 +92,11 @@ public class BlueLowAuto extends LinearOpMode {
                 .addDisplacementMarker(() -> {
                     claw.lOpen();
                 })
+                */
                 .build();
 
-        Trajectory reset = drive.trajectoryBuilder(board.end())
-                .addDisplacementMarker(() -> {
+        TrajectorySequence reset = drive.trajectorySequenceBuilder(board.end())
+                /*.addDisplacementMarker(() -> {
                     claw.close();
                 })
                 .addDisplacementMarker(() -> {
@@ -109,7 +107,7 @@ public class BlueLowAuto extends LinearOpMode {
                 })
                 .addDisplacementMarker(() -> {
                     arm.setTargetPos(0);
-                })
+                })*/
                 .lineTo(new Vector2d(47, 58))
                 .build();
 
@@ -135,6 +133,24 @@ public class BlueLowAuto extends LinearOpMode {
                 case ready:
                     if (!drive.isBusy()) {
                         drive.followTrajectorySequence(ready);
+                        nextTraj(Constants.autoStates.board);
+                    }
+                    break;
+                case board:
+                    if (!drive.isBusy()) {
+                        drive.followTrajectorySequence(board);
+                        nextTraj(Constants.autoStates.reset);
+                    }
+                    break;
+                case reset:
+                    if (!drive.isBusy()) {
+                        drive.followTrajectorySequence(reset);
+                        nextTraj(Constants.autoStates.park);
+                    }
+                    break;
+                case park:
+                    if (!drive.isBusy()) {
+                        drive.followTrajectory(park);
                         nextTraj(Constants.autoStates.idle);
                     }
                     break;
