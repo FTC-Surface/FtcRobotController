@@ -27,7 +27,7 @@ public class Constants {
     public final double lClawOpen = 0.3;
 
     public final double clawHolderRotate = 0.33;
-    public final double clawHolderReset = 0.95;
+    public final double clawHolderReset = 0.6;
 
     public final double airplaneLaunch = 0.2;
 }

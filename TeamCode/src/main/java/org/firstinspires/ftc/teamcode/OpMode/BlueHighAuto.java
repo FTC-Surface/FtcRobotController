@@ -56,34 +56,37 @@ public class BlueHighAuto extends LinearOpMode {
 
         waitForStart();
 
-        double turnDeg = 0;
-        double resetDeg = 0;
         Vector2d boardVector = new Vector2d();
 
+        TrajectorySequence ready = drive.trajectorySequenceBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(-35, 39, Math.toRadians(0)))
+                .build();;
+
         if(zone == 0){
-            turnDeg = 90;
-            resetDeg = -90;
-            boardVector = new Vector2d(47.5, 29);
+            ready = drive.trajectorySequenceBuilder(startPose)
+                    .splineToLinearHeading(new Pose2d(-35, 39, Math.toRadians(0)), Math.toRadians(0))
+                    .turn(Math.toRadians(-90))
+                    .build();
+
+            boardVector = new Vector2d(47.5, 43);
         } else if(zone == 1){
-            turnDeg = 0;
+            ready = drive.trajectorySequenceBuilder(startPose)
+                    .lineToLinearHeading(new Pose2d(-52.5, 28, Math.toRadians(0)))
+                    .turn(Math.toRadians(-95))
+                    .build();
+
             boardVector = new Vector2d(47.5, 36);
         } else if(zone == 2) {
-            turnDeg = -90;
-            resetDeg = 90;
-            boardVector = new Vector2d(47.5, 43);
+            ready = drive.trajectorySequenceBuilder(startPose)
+                    .splineToLinearHeading(new Pose2d(-35, 39, Math.toRadians(180)), Math.toRadians(0))
+                    .turn(Math.toRadians(90))
+                    .build();
+
+            boardVector = new Vector2d(47.5, 29);
         }
 
-        TrajectorySequence ready = drive.trajectorySequenceBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(-35, 59.6, Math.toRadians(270)))
-                .turn(Math.toRadians(turnDeg))
-                .addDisplacementMarker(() -> {
-                    claw.rOpen();
-                })
-                .turn(Math.toRadians(resetDeg))
-                .build();
-
         Trajectory spline = drive.trajectoryBuilder(ready.end())
-                .splineToLinearHeading(new Pose2d(-19, 0, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-21, 0, Math.toRadians(0)), Math.toRadians(0))
                 .build();
 
         Trajectory forward = drive.trajectoryBuilder(spline.end())
@@ -92,38 +95,14 @@ public class BlueHighAuto extends LinearOpMode {
 
         Trajectory board = drive.trajectoryBuilder(forward.end())
                 .lineTo(boardVector)
-                .addDisplacementMarker(() -> {
-                    arm.setTargetPos(550);
-                })
-                .addDisplacementMarker(() -> {
-                    elevator.moveLift(Constants.upDownStates.up, 100);
-                })
-                .addDisplacementMarker(() -> {
-                    clawHolder.rotate();
-                })
-                .addDisplacementMarker(() -> {
-                    claw.lOpen();
-                })
                 .build();
 
         Trajectory reset = drive.trajectoryBuilder(board.end())
-                .addDisplacementMarker(() -> {
-                    claw.close();
-                })
-                .addDisplacementMarker(() -> {
-                    clawHolder.reset();
-                })
-                .addDisplacementMarker(() -> {
-                    elevator.moveLift(Constants.upDownStates.down, 0);
-                })
-                .addDisplacementMarker(() -> {
-                    arm.setTargetPos(0);
-                })
-                .lineTo(new Vector2d(47, 58))
+                .lineTo(new Vector2d(47, 12))
                 .build();
 
         Trajectory park = drive.trajectoryBuilder(reset.end())
-                .lineTo(new Vector2d(55, 58))
+                .lineTo(new Vector2d(56, 12))
                 .build();
 
         telemetry.addData("Parking Zone: ", zone);
@@ -137,8 +116,57 @@ public class BlueHighAuto extends LinearOpMode {
 
             switch(currentTraj) {
                 case ready:
+                    sleep(100);
                     if (!drive.isBusy()) {
                         drive.followTrajectorySequence(ready);
+                        claw.rOpen();
+                        sleep(300);
+                        clawHolder.rotate();
+                        sleep(300);
+                        nextTraj(Constants.autoStates.spline);
+                    }
+                    break;
+                case spline:
+                    sleep(100);
+                    if (!drive.isBusy()) {
+                        drive.followTrajectory(spline);
+                        nextTraj(Constants.autoStates.forward);
+                    }
+                    break;
+                case forward:
+                    sleep(100);
+                    if (!drive.isBusy()) {
+                        drive.followTrajectory(forward);
+                        nextTraj(Constants.autoStates.board);
+                    }
+                    break;
+                case board:
+                    sleep(100);
+                    if (!drive.isBusy()) {
+                        drive.followTrajectory(board);
+                        arm.setTargetPos(550);
+                        sleep(300);
+                        elevator.moveLift(Constants.upDownStates.up, 50);
+                        sleep(300);
+                        claw.lOpen();
+                        nextTraj(Constants.autoStates.reset);
+                    }
+                    break;
+                case reset:
+                    sleep(100);
+                    if (!drive.isBusy()) {
+                        elevator.moveLift(Constants.upDownStates.down, 0);
+                        sleep(300);
+                        arm.setTargetPos(0);
+                        sleep(300);
+                        drive.followTrajectory(reset);
+                        nextTraj(Constants.autoStates.park);
+                    }
+                    break;
+                case park:
+                    sleep(100);
+                    if (!drive.isBusy()) {
+                        drive.followTrajectory(park);
                         nextTraj(Constants.autoStates.idle);
                     }
                     break;

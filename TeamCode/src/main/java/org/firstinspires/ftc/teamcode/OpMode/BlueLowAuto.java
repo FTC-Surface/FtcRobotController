@@ -22,6 +22,7 @@ public class BlueLowAuto extends LinearOpMode {
     Arm arm = new Arm();
     Elevator elevator = new Elevator();
     ClawHolder clawHolder = new ClawHolder();
+    Constants constants = new Constants();
 
     SampleMecanumDrive drive;
     Constants.autoStates currentTraj = Constants.autoStates.idle;
@@ -48,6 +49,8 @@ public class BlueLowAuto extends LinearOpMode {
 
         int zone = 3;
 
+        claw.close();
+
         while (opModeInInit()) {
             zone = kam.getZone();
             telemetry.addData("Prop Zone", zone);
@@ -56,63 +59,43 @@ public class BlueLowAuto extends LinearOpMode {
 
         waitForStart();
 
-        double turnDeg = 0;
         Vector2d boardVector = new Vector2d();
 
+        Trajectory ready = drive.trajectoryBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(34, 36, Math.toRadians(180)))
+                .build();;
+
         if(zone == 0){
-            turnDeg = 90;
-            boardVector = new Vector2d(47.5, 29);
-        } else if(zone == 1){
-            turnDeg = 0;
-            boardVector = new Vector2d(47.5, 36);
-        } else if(zone == 2) {
-            turnDeg = -90;
+            ready = drive.trajectoryBuilder(startPose)
+                    .lineToLinearHeading(new Pose2d(34, 36, Math.toRadians(180)))
+                    .build();
+
             boardVector = new Vector2d(47.5, 43);
+        } else if(zone == 1){
+            ready = drive.trajectoryBuilder(startPose)
+                    .lineToLinearHeading(new Pose2d(27, 27.5, Math.toRadians(180)))
+                    .build();
+
+            boardVector = new Vector2d(47.5, 36);
+
+        } else if(zone == 2) {
+            ready = drive.trajectoryBuilder(startPose)
+                    .splineToLinearHeading(new Pose2d(12, 36, Math.toRadians(180)), Math.toRadians(180))
+                    .build();
+
+            boardVector = new Vector2d(47.5, 29);
         }
 
-        TrajectorySequence ready = drive.trajectorySequenceBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(12, 33, Math.toRadians(270)))
-                .turn(Math.toRadians(turnDeg))
-                /*.addDisplacementMarker(() -> {
-                    claw.rOpen();
-                })*/
-                .build();
-
         TrajectorySequence board = drive.trajectorySequenceBuilder(ready.end())
-                .lineToLinearHeading(new Pose2d(boardVector, Math.toRadians(180)))
-                /*.addDisplacementMarker(() -> {
-                    arm.setTargetPos(5255);
-                })
-                .addDisplacementMarker(() -> {
-                    elevator.moveLift(Constants.upDownStates.up, 100);
-                })
-                .addDisplacementMarker(() -> {
-                    clawHolder.rotate();
-                })
-                .addDisplacementMarker(() -> {
-                    claw.lOpen();
-                })
-                */
+                .lineTo(boardVector)
                 .build();
 
         TrajectorySequence reset = drive.trajectorySequenceBuilder(board.end())
-                /*.addDisplacementMarker(() -> {
-                    claw.close();
-                })
-                .addDisplacementMarker(() -> {
-                    clawHolder.reset();
-                })
-                .addDisplacementMarker(() -> {
-                    elevator.moveLift(Constants.upDownStates.down, 0);
-                })
-                .addDisplacementMarker(() -> {
-                    arm.setTargetPos(0);
-                })*/
-                .lineTo(new Vector2d(47, 58))
+                .lineTo(new Vector2d(47, 57.75))
                 .build();
 
         Trajectory park = drive.trajectoryBuilder(reset.end())
-                .lineTo(new Vector2d(55, 58))
+                .lineTo(new Vector2d(56, 57.75))
                 .build();
 
         telemetry.addData("Parking Zone: ", zone);
@@ -124,31 +107,49 @@ public class BlueLowAuto extends LinearOpMode {
             kam.kamera.stopRecordingPipeline();
 
             arm.loop();
-            claw.close();
 
             telemetry.addData("Current Traj:", currentTraj);
             telemetry.update();
 
+            sleep(500);
+
             switch(currentTraj) {
                 case ready:
+                    sleep(100);
                     if (!drive.isBusy()) {
-                        drive.followTrajectorySequence(ready);
-                        nextTraj(Constants.autoStates.board);
+                        drive.followTrajectory(ready);
+                        claw.lOpen();
+                        sleep(300);
+                        clawHolder.rotate();
+                        sleep(300);
+                        nextTraj(Constants.autoStates.idle);
                     }
                     break;
                 case board:
+                    sleep(100);
                     if (!drive.isBusy()) {
                         drive.followTrajectorySequence(board);
+                        arm.setTargetPos(550);
+                        sleep(300);
+                        elevator.moveLift(Constants.upDownStates.up, 50);
+                        sleep(300);
+                        claw.rOpen();
                         nextTraj(Constants.autoStates.reset);
                     }
                     break;
                 case reset:
+                    sleep(100);
                     if (!drive.isBusy()) {
+                        elevator.moveLift(Constants.upDownStates.down, 0);
+                        sleep(300);
+                        arm.setTargetPos(0);
+                        sleep(300);
                         drive.followTrajectorySequence(reset);
                         nextTraj(Constants.autoStates.park);
                     }
                     break;
                 case park:
+                    sleep(100);
                     if (!drive.isBusy()) {
                         drive.followTrajectory(park);
                         nextTraj(Constants.autoStates.idle);
