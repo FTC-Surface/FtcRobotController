@@ -54,4 +54,8 @@ public class Arm{
         armOne.setPower(power);
         armTwo.setPower(-power);
     }
+
+    public boolean isFinished(){
+        return Math.abs(armOne.getCurrentPosition()-targetPos) < 10;
+    }
 }

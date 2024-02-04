@@ -11,6 +11,8 @@ public class Elevator {
     public DcMotorEx LeftMot;
     public DcMotorEx RightMot;
 
+    double targetPos = 0;
+
     public void init(HardwareMap hardwareMap){
         LeftMot = hardwareMap.get(DcMotorEx.class, "elevMotorLeft");
         LeftMot.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -25,6 +27,7 @@ public class Elevator {
     }
 
     public void moveLift(Constants.upDownStates state, int height){
+        targetPos = height;
         switch (state){
             case up:
                 LeftMot.setTargetPosition(-height);
@@ -50,5 +53,8 @@ public class Elevator {
 
     public int getPosition() {
         return ((RightMot.getCurrentPosition() - LeftMot.getCurrentPosition())/2);
+    }
+    public boolean isFinished(){
+        return Math.abs(getPosition()-targetPos) < 10;
     }
 }

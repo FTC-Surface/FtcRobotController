@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.Roadrunner.trajectorysequence.TrajectorySequence;
@@ -22,10 +23,9 @@ public class RedLowAuto extends LinearOpMode {
     Arm arm = new Arm();
     Elevator elevator = new Elevator();
     ClawHolder clawHolder = new ClawHolder();
-    Constants constants = new Constants();
 
     SampleMecanumDrive drive;
-    Constants.autoStates currentTraj = Constants.autoStates.idle;
+    Constants.autoStates currentTraj = Constants.autoStates.park;
 
     Pose2d startPose = new Pose2d(12, -59.6, Math.toRadians(90));
 
@@ -42,14 +42,14 @@ public class RedLowAuto extends LinearOpMode {
         elevator.init(hardwareMap);
         clawHolder.init(hardwareMap);
 
+        clawHolder.rotate();
+
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
 
-        currentTraj = Constants.autoStates.ready;
+        currentTraj = Constants.autoStates.park;
 
         int zone = 3;
-
-        claw.close();
 
         while (opModeInInit()) {
             zone = kam.getZone();
@@ -67,27 +67,27 @@ public class RedLowAuto extends LinearOpMode {
 
         if(zone == 0){
             ready = drive.trajectoryBuilder(startPose)
-                    .splineToLinearHeading(new Pose2d(12, -36, Math.toRadians(180)),Math.toRadians(180))
+                    .splineToLinearHeading(new Pose2d(15, -36, Math.toRadians(180)),Math.toRadians(180))
                     .build();
 
             boardVector = new Vector2d(47.5, -29);
         } else if(zone == 1){
             ready = drive.trajectoryBuilder(startPose)
-                    .lineToLinearHeading(new Pose2d(27, -27.5, Math.toRadians(180)))
+                    .lineToLinearHeading(new Pose2d(30, -27.5, Math.toRadians(180)))
                     .build();
 
             boardVector = new Vector2d(47.5, -36);
 
         } else if(zone == 2) {
             ready = drive.trajectoryBuilder(startPose)
-                    .lineToLinearHeading(new Pose2d(34, -36, Math.toRadians(180)))
+                    .lineToLinearHeading(new Pose2d(37, -36, Math.toRadians(180)))
                     .build();
 
             boardVector = new Vector2d(47.5, -43);
         }
 
         TrajectorySequence board = drive.trajectorySequenceBuilder(ready.end())
-                .lineTo(boardVector)
+                .lineToLinearHeading(new Pose2d(boardVector, Math.toRadians(0)))
                 .build();
 
         TrajectorySequence reset = drive.trajectorySequenceBuilder(board.end())
@@ -95,61 +95,76 @@ public class RedLowAuto extends LinearOpMode {
                 .build();
 
         Trajectory park = drive.trajectoryBuilder(reset.end())
-                .lineTo(new Vector2d(56, -57.5))
+                .lineTo(new Vector2d(57, -56.6))
                 .build();
+
+        kam.kamera.stopStreaming();
+        kam.kamera.stopRecordingPipeline();
 
         telemetry.addData("Parking Zone: ", zone);
         telemetry.addLine("Ready");
         telemetry.update();
 
         while (opModeIsActive()){
-            kam.kamera.stopStreaming();
-            kam.kamera.stopRecordingPipeline();
 
             arm.loop();
+            drive.update();
 
             telemetry.addData("Current Traj:", currentTraj);
             telemetry.update();
 
-            sleep(500);
-
             switch(currentTraj) {
                 case ready:
-                    sleep(100);
                     if (!drive.isBusy()) {
                         drive.followTrajectory(ready);
                         claw.rOpen();
-                        sleep(300);
+                        ElapsedTime timer = new ElapsedTime();
+                        timer.reset();
+                        while (timer.seconds() < 1){
+                        }
                         clawHolder.rotate();
-                        sleep(300);
-                        nextTraj(Constants.autoStates.idle);
+                        nextTraj(Constants.autoStates.board);
                     }
                     break;
                 case board:
-                    sleep(100);
                     if (!drive.isBusy()) {
                         drive.followTrajectorySequence(board);
-                        arm.setTargetPos(550);
-                        sleep(300);
-                        elevator.moveLift(Constants.upDownStates.up, 50);
-                        sleep(300);
-                        claw.lOpen();
-                        nextTraj(Constants.autoStates.reset);
+                        nextTraj(Constants.autoStates.movedToBoard);
                     }
                     break;
+                case movedToBoard:
+                    /*arm.setTargetPos(550);
+                    while (!arm.isFinished()){
+                        arm.loop();
+                    }
+                    elevator.moveLift(Constants.upDownStates.up, 50);
+                    while (!elevator.isFinished()){
+
+                    }
+                    ElapsedTime timer = new ElapsedTime();
+                    timer.reset();
+                    while (timer.seconds() < 0.5){
+                    }
+                    claw.lOpen();
+                    timer.reset();
+                    while (timer.seconds() < 0.5){
+                    }*/
+                    nextTraj(Constants.autoStates.reset);
+
                 case reset:
-                    sleep(100);
                     if (!drive.isBusy()) {
-                        elevator.moveLift(Constants.upDownStates.down, 0);
-                        sleep(300);
-                        arm.setTargetPos(0);
-                        sleep(300);
+                        /*arm.setTargetPos(0);
+                        while (!arm.isFinished()){
+                            arm.loop();
+                        }
+                        elevator.moveLift(Constants.upDownStates.up, 0);
+                        while (!elevator.isFinished()){
+                        }*/
                         drive.followTrajectorySequence(reset);
                         nextTraj(Constants.autoStates.park);
                     }
                     break;
                 case park:
-                    sleep(100);
                     if (!drive.isBusy()) {
                         drive.followTrajectory(park);
                         nextTraj(Constants.autoStates.idle);

@@ -90,10 +90,11 @@ public class TeleOpModeSurface extends LinearOpMode {
 
             //This gives us the speed for the various motors. Multiply to lower the speeds.
             double[] speed = {
-                    ((drive * 0.8) - (strafe * 0.8) - (twist * 0.7)),
-                    ((drive * 0.8) + (strafe * 0.8) + (twist * 0.7)),
-                    ((drive * 0.8) + (strafe * 0.8) - (twist * 0.7)),
-                    ((drive * 0.8) - (strafe * 0.8) + (twist * 0.7))};
+                    ((drive * 0.675) - (strafe * 0.675) - (twist * 0.6)),
+                    ((drive * 0.675) + (strafe * 0.675) + (twist * 0.6)),
+                    ((drive * 0.675) + (strafe * 0.675) - (twist * 0.6)),
+                    ((drive * 0.675) - (strafe * 0.675) + (twist * 0.6))
+            };
 
             //Calculate the maximum/largest speed of all the motors
             double max = Math.abs(speed[0]);
@@ -150,10 +151,14 @@ public class TeleOpModeSurface extends LinearOpMode {
                 armLeveller.setTargetPos(0);
             }
 
+            if(gamepad1.dpad_right){
+                armLeveller.setTargetPos(450);
+            }
+
 //**************************************************************************************************************************************************************************************************************************************************
 
             //Launch airplane
-            if(gamepad1.dpad_right){
+            if(gamepad1.dpad_left){
                 airplaneLancher.launch();
             }
 

@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.Roadrunner.trajectorysequence.TrajectorySequence;
@@ -116,13 +117,14 @@ public class BlueHighAuto extends LinearOpMode {
 
             switch(currentTraj) {
                 case ready:
-                    sleep(100);
                     if (!drive.isBusy()) {
                         drive.followTrajectorySequence(ready);
-                        claw.rOpen();
-                        sleep(300);
+                        claw.lOpen();
+                        ElapsedTime timer = new ElapsedTime();
+                        timer.reset();
+                        while (timer.seconds() < 1){
+                        }
                         clawHolder.rotate();
-                        sleep(300);
                         nextTraj(Constants.autoStates.spline);
                     }
                     break;
@@ -144,22 +146,12 @@ public class BlueHighAuto extends LinearOpMode {
                     sleep(100);
                     if (!drive.isBusy()) {
                         drive.followTrajectory(board);
-                        arm.setTargetPos(550);
-                        sleep(300);
-                        elevator.moveLift(Constants.upDownStates.up, 50);
-                        sleep(300);
-                        claw.lOpen();
                         nextTraj(Constants.autoStates.reset);
                     }
                     break;
                 case reset:
                     sleep(100);
                     if (!drive.isBusy()) {
-                        elevator.moveLift(Constants.upDownStates.down, 0);
-                        sleep(300);
-                        arm.setTargetPos(0);
-                        sleep(300);
-                        drive.followTrajectory(reset);
                         nextTraj(Constants.autoStates.park);
                     }
                     break;
@@ -167,6 +159,7 @@ public class BlueHighAuto extends LinearOpMode {
                     sleep(100);
                     if (!drive.isBusy()) {
                         drive.followTrajectory(park);
+                        clawHolder.reset();
                         nextTraj(Constants.autoStates.idle);
                     }
                     break;
