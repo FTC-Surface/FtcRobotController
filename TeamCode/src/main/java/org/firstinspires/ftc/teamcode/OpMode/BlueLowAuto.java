@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 
-@Autonomous(name = "AutoOpBlueBottom")
+
 public class BlueLowAuto extends LinearOpMode {
     Cam kam = new Cam();
     Claw claw = new Claw();
@@ -41,8 +41,6 @@ public class BlueLowAuto extends LinearOpMode {
         arm.init(hardwareMap);
         elevator.init(hardwareMap);
         clawHolder.init(hardwareMap);
-
-        clawHolder.rotate();
 
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);

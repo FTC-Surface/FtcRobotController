@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.Cam;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 
-@Autonomous(name = "AutoOpRedTop")
+
 public class RedHighAuto extends LinearOpMode {
     Cam kam = new Cam();
     Claw claw = new Claw();

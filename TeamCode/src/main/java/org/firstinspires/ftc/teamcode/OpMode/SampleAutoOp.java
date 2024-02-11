@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Cam;
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 
-@Autonomous(name = "TestOpMode")
+
 public class SampleAutoOp extends LinearOpMode {
     Cam cam = new Cam();
     SampleMecanumDrive drive;

@@ -16,17 +16,16 @@ import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.AirplaneLancher;
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 
-public class TeleOpModeSurface extends LinearOpMode {
+@TeleOp(name = "Mecanum Drive Scrim")
+public class TeleOpScrimage extends LinearOpMode {
     //Initialized motors for driving
     DcMotorEx topLeftMotor, topRightMotor, bottomLeftMotor, bottomRightMotor;
-
     //Subsystem classes
     Elevator elevator = new Elevator();
-    Claw claw = new Claw();
-    ClawHolder clawHolder = new ClawHolder();
-    Arm armLeveller = new Arm();
     AirplaneLancher airplaneLancher = new AirplaneLancher();
-    Constants constants = new Constants();
+    Claw claw = new Claw();
+    Arm armLeveller = new Arm();
+    ClawHolder clawHolder = new ClawHolder();
 
     public void runOpMode(){
         //Assign the motors and initialize the classes. Reverse the two right motors to get it working and also initialize telemetry.
@@ -45,25 +44,22 @@ public class TeleOpModeSurface extends LinearOpMode {
         bottomRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         topRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        elevator.init(hardwareMap);
+        //elevator.init(hardwareMap);
         int height = 0;
+
+        airplaneLancher.init((hardwareMap));
 
         claw.init(hardwareMap);
 
-        armLeveller.init(hardwareMap);
-
         clawHolder.init(hardwareMap);
 
-        airplaneLancher.init((hardwareMap));
+        armLeveller.init(hardwareMap);
 
         waitForStart();
 
         //Start the robot off with the claw open and the claw holder on the ground. Update telemetry info
-
         claw.open();
         clawHolder.reset();
-
-        telemetry.update();
 
         while (opModeIsActive() && !isStopRequested()) {
 
@@ -74,10 +70,8 @@ public class TeleOpModeSurface extends LinearOpMode {
             telemetry.addData("Front Right: ", topRightMotor.getPower());
             telemetry.addData("Back Left: ", bottomLeftMotor.getPower());
             telemetry.addData("Back Right: ", bottomRightMotor.getPower());
-            telemetry.addData("ElevMotLeft: ", elevator.LeftMot.getPower());
-            telemetry.addData("ElevMotRight: ", elevator.RightMot.getPower());
-            telemetry.addData("ArmMotLeft: ", armLeveller.armTwo.getPower());
-            telemetry.addData("ArmMotRight: ", armLeveller.armOne.getPower());
+            /*telemetry.addData("ElevMotLeft: ", elevator.LeftMot.getPower());
+            telemetry.addData("ElevMotRight: ", elevator.RightMot.getPower());*/
             telemetry.update();
 
             /* drive is for forward/backward
@@ -119,6 +113,28 @@ public class TeleOpModeSurface extends LinearOpMode {
 
 //**************************************************************************************************************************************************************************************************************************************************
 
+            /*//Launch airplane
+            if(gamepad1.dpad_left){
+                airplaneLancher.launch();
+            }*/
+
+//**************************************************************************************************************************************************************************************************************************************************
+
+            //Lift the arm up
+            if(gamepad1.right_bumper){
+                armLeveller.setTargetPos(525);
+            }
+            //Reset the arm onto the ground.
+            if(gamepad1.right_trigger > 0.3){
+                armLeveller.setTargetPos(0);
+            }
+
+            if(gamepad1.dpad_right){
+                armLeveller.setTargetPos(450);
+            }
+
+//**************************************************************************************************************************************************************************************************************************************************
+
             //Close the claw to pick up pixels
             if(gamepad1.a || gamepad2.a){
                 claw.close();
@@ -141,29 +157,7 @@ public class TeleOpModeSurface extends LinearOpMode {
 
 //**************************************************************************************************************************************************************************************************************************************************
 
-            //Lift the arm up
-            if(gamepad1.right_bumper){
-                armLeveller.setTargetPos(525);
-            }
-            //Reset the arm onto the ground.
-            if(gamepad1.right_trigger > 0.3){
-                armLeveller.setTargetPos(0);
-            }
-
-            if(gamepad1.dpad_right){
-                armLeveller.setTargetPos(450);
-            }
-
-//**************************************************************************************************************************************************************************************************************************************************
-
-            //Launch airplane
-            if(gamepad1.dpad_left){
-                airplaneLancher.launch();
-            }
-
-//**************************************************************************************************************************************************************************************************************************************************
-
-            //Automatically lift the elevator to max height
+            /*//Automatically lift the elevator to max height
             if(gamepad1.dpad_up){
                 elevator.moveLift(Constants.upDownStates.up, 1770);
             }
@@ -191,7 +185,7 @@ public class TeleOpModeSurface extends LinearOpMode {
             }
 
             //Set the height.
-            height = elevator.getPosition();
+            height = elevator.getPosition();*/
         }
     }
 }

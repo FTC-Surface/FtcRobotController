@@ -22,9 +22,9 @@ public class Constants {
         blue
     }
 
-    public final double rClawClose = 0.57;
+    public final double rClawClose = 1;
     public final double lClawClose = 0.05;
-    public final double rClawOpen = 0.36;
+    public final double rClawOpen = 0.88;
     public final double lClawOpen = 0.3;
 
     public final double clawHolderRotate = 0;
