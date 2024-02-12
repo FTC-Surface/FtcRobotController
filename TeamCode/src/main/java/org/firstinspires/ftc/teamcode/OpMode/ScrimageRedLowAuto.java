@@ -41,15 +41,18 @@ public class ScrimageRedLowAuto extends LinearOpMode {
 
         currentTraj = Constants.autoStates.park;
 
-        int zone = 3;
+        waitForStart();
 
-        Trajectory park = drive.trajectoryBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(56, -59.5, Math.toRadians(180)))
+        clawHolder.rotate();
+        claw.open();
+
+        Trajectory forward = drive.trajectoryBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(18, -51.5, Math.toRadians(0)))
                 .build();
 
-        telemetry.addData("Parking Zone: ", zone);
-        telemetry.addLine("Ready");
-        telemetry.update();
+        Trajectory park = drive.trajectoryBuilder(forward.end())
+                .lineTo(new Vector2d(56, -58.6))
+                .build();
 
         while (opModeIsActive()){
             kam.kamera.stopStreaming();
@@ -74,8 +77,14 @@ public class ScrimageRedLowAuto extends LinearOpMode {
                         timer.reset();
                         while (timer.seconds() < 1){
                         }
+                        nextTraj(Constants.autoStates.forward);
                     }
                     break;
+                case forward:
+                    if(!drive.isBusy()){
+                        drive.followTrajectory(forward);
+                        nextTraj(Constants.autoStates.park);
+                    }
                 case park:
                     if (!drive.isBusy()) {
                         drive.followTrajectory(park);

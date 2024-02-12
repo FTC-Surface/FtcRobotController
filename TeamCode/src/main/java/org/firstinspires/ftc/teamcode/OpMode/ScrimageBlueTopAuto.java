@@ -9,22 +9,21 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.Roadrunner.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.Subsystems.ClawHolder;
-import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.Cam;
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
+import org.firstinspires.ftc.teamcode.Subsystems.ClawHolder;
+import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 
-@Autonomous(name = "Blue Low Scrimage")
-public class ScrimageBlueLowAuto extends LinearOpMode {
+@Autonomous(name = "Red Top Scrimage")
+public class ScrimageBlueTopAuto extends LinearOpMode {
     Cam kam = new Cam();
     Claw claw = new Claw();
-
     ClawHolder clawHolder = new ClawHolder();
 
     SampleMecanumDrive drive;
     Constants.autoStates currentTraj = Constants.autoStates.idle;
 
-    Pose2d startPose = new Pose2d(12, 59.6, Math.toRadians(270));
+    Pose2d startPose = new Pose2d(-34, 59.6, Math.toRadians(270));
 
     void nextTraj(Constants.autoStates state){
         currentTraj = state;
@@ -40,7 +39,7 @@ public class ScrimageBlueLowAuto extends LinearOpMode {
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
 
-        currentTraj = Constants.autoStates.ready;
+        currentTraj = Constants.autoStates.park;
 
         waitForStart();
 
@@ -48,11 +47,11 @@ public class ScrimageBlueLowAuto extends LinearOpMode {
         claw.open();
 
         Trajectory forward = drive.trajectoryBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(18, 51.5, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-44, 0, Math.toRadians(0)))
                 .build();
 
         Trajectory park = drive.trajectoryBuilder(forward.end())
-                .lineTo(new Vector2d(56, 58.6))
+                .lineTo(new Vector2d(56, 12))
                 .build();
 
         while (opModeIsActive()){
