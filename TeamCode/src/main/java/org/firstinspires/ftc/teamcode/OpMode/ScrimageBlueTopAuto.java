@@ -14,9 +14,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.ClawHolder;
 import org.firstinspires.ftc.teamcode.Subsystems.Constants;
 
-@Autonomous(name = "Red Top Scrimage")
+@Autonomous(name = "Blue Top Scrimage")
 public class ScrimageBlueTopAuto extends LinearOpMode {
-    Cam kam = new Cam();
     Claw claw = new Claw();
     ClawHolder clawHolder = new ClawHolder();
 
@@ -27,19 +26,16 @@ public class ScrimageBlueTopAuto extends LinearOpMode {
 
     void nextTraj(Constants.autoStates state){
         currentTraj = state;
-        telemetry.addData("Trajectory: ", currentTraj);
-        telemetry.update();
     }
 
     public void runOpMode(){
-        kam.init(hardwareMap, Constants.cameraColor.blue);
         claw.init(hardwareMap);
         clawHolder.init(hardwareMap);
 
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
 
-        currentTraj = Constants.autoStates.park;
+        currentTraj = Constants.autoStates.ready;
 
         waitForStart();
 
@@ -55,12 +51,6 @@ public class ScrimageBlueTopAuto extends LinearOpMode {
                 .build();
 
         while (opModeIsActive()){
-            kam.kamera.stopStreaming();
-            kam.kamera.stopRecordingPipeline();
-
-            telemetry.addData("Current Traj:", currentTraj);
-            telemetry.update();
-
             switch(currentTraj) {
                 case ready:
                     if (!drive.isBusy()) {

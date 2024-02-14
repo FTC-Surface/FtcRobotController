@@ -16,9 +16,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 
 @Autonomous(name = "Blue Low Scrimage")
 public class ScrimageBlueLowAuto extends LinearOpMode {
-    Cam kam = new Cam();
     Claw claw = new Claw();
-
     ClawHolder clawHolder = new ClawHolder();
 
     SampleMecanumDrive drive;
@@ -28,12 +26,9 @@ public class ScrimageBlueLowAuto extends LinearOpMode {
 
     void nextTraj(Constants.autoStates state){
         currentTraj = state;
-        telemetry.addData("Trajectory: ", currentTraj);
-        telemetry.update();
     }
 
     public void runOpMode(){
-        kam.init(hardwareMap, Constants.cameraColor.blue);
         claw.init(hardwareMap);
         clawHolder.init(hardwareMap);
 
@@ -56,12 +51,6 @@ public class ScrimageBlueLowAuto extends LinearOpMode {
                 .build();
 
         while (opModeIsActive()){
-            kam.kamera.stopStreaming();
-            kam.kamera.stopRecordingPipeline();
-
-            telemetry.addData("Current Traj:", currentTraj);
-            telemetry.update();
-
             switch(currentTraj) {
                 case ready:
                     if (!drive.isBusy()) {
